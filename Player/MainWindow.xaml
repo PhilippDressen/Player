@@ -488,6 +488,7 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <DropShadowEffect x:Key="DropShadow" Color="Black" ShadowDepth="4" BlurRadius="3"/>
     </Window.Resources>
     <Window.ContextMenu>
         <ContextMenu Style="{DynamicResource CMStyle}" Foreground="White">
@@ -530,14 +531,16 @@
             </ProgressBar>
             <Grid x:Name="g_info" Margin="5,5,5,10" MinWidth="10" MinHeight="10" VerticalAlignment="Top" HorizontalAlignment="Left" Opacity="0">
                 <StackPanel Orientation="Horizontal" Margin="0">
-                    <Image x:Name="i_minicover" MaxHeight="100" Stretch="UniformToFill"/>
-                    <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" MaxWidth="450">
-                        <Label x:Name="l_titel" Background="{x:Null}" Padding="0" FontSize="16" FontWeight="Bold" Content="Kein Titel" ScrollViewer.CanContentScroll="True" Foreground="White"/>
-                        <Label x:Name="l_performer" Background="{x:Null}" Padding="0" FontSize="16" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True" Foreground="White"/>
-                        <Label x:Name="l_album" Background="{x:Null}" Padding="0" FontSize="16" ScrollViewer.CanContentScroll="True" Foreground="White"/>
+                    <Image x:Name="i_minicover" MaxHeight="100" Stretch="UniformToFill" Effect="{DynamicResource DropShadow}"/>
+                    <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" MaxWidth="450" Effect="{DynamicResource DropShadow}">
+                        <Label x:Name="l_titel" Background="{x:Null}" Padding="0" FontSize="16" FontWeight="Bold" Content="Kein Titel" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}">
 
-                        <TextBlock x:Name="tb_positionmini" TextWrapping="Wrap" Foreground="White" FontSize="16"><Run x:Name="il_positionmini" Text="00:00:00"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="il_lengthmini" Text="00:00:00"/></TextBlock>
-                        <TextBlock TextWrapping="Wrap" Foreground="White"><Run x:Name="r_playlist"/><Run Text=" "/><Run Text=" "/><Run Text=" "/><Run x:Name="r_track" Text="0"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="r_tracks" Text="0"/></TextBlock>
+                        </Label>
+                        <Label x:Name="l_performer" Background="{x:Null}" Padding="0" FontSize="16" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
+                        <Label x:Name="l_album" Background="{x:Null}" Padding="0" FontSize="16" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
+
+                        <TextBlock x:Name="tb_positionmini" TextWrapping="Wrap" Foreground="White" FontSize="16" Effect="{DynamicResource DropShadow}"><Run x:Name="il_positionmini" Text="00:00:00"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="il_lengthmini" Text="00:00:00"/></TextBlock>
+                        <TextBlock TextWrapping="Wrap" Foreground="White" Effect="{DynamicResource DropShadow}"><Run x:Name="r_playlist"/><Run Text=" "/><Run Text=" "/><Run Text=" "/><Run x:Name="r_track" Text="0"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="r_tracks" Text="0"/></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -562,7 +565,7 @@
                         </Slider.RenderTransform>
                     </Slider>
                     <Grid VerticalAlignment="Top">
-                        <Label x:Name="l_position" Content="Spielzeit" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Left" Background="{x:Null}" RenderTransformOrigin="0.5,0.5">
+                        <Label x:Name="l_position" Content="Spielzeit" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Left" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -572,7 +575,7 @@
                                 </TransformGroup>
                             </Label.RenderTransform>
                         </Label>
-                        <Label x:Name="l_zeit" Content="Zeit" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" RenderTransformOrigin="0.5,0.5">
+                        <Label x:Name="l_zeit" Content="Zeit" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -582,7 +585,7 @@
                                 </TransformGroup>
                             </Label.RenderTransform>
                         </Label>
-                        <Label x:Name="l_length" Content="Länge" Margin="0,0,50,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Right" Background="{x:Null}" RenderTransformOrigin="0.5,0.5">
+                        <Label x:Name="l_length" Content="Länge" Margin="0,0,50,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Right" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -594,7 +597,7 @@
                         </Label>
                     </Grid>
                     <StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,45,10">
-                        <Image x:Name="i_cover" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxWidth="150" MaxHeight="150" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5">
+                        <Image x:Name="i_cover" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxWidth="150" MaxHeight="150" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Image.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -604,15 +607,15 @@
                                 </TransformGroup>
                             </Image.RenderTransform>
                         </Image>
-                        <StackPanel VerticalAlignment="Center" Margin="5,0,0,0">
-                            <Label x:Name="l_titel1" Background="{x:Null}" Padding="0" FontSize="16" FontWeight="Bold" Content="Kein Titel" ScrollViewer.CanContentScroll="True" Foreground="White"/>
-                            <Label x:Name="l_performer1" Background="{x:Null}" Padding="0" FontSize="16" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True" Foreground="White"/>
-                            <Label x:Name="l_album1" Background="{x:Null}" Padding="0" FontSize="16" ScrollViewer.CanContentScroll="True" Foreground="White"/>
-                            <TextBlock TextWrapping="Wrap" Foreground="White"><Run x:Name="r_playlist1"/><Run Text=" "/><Run Text=" "/><Run Text=" "/><Run x:Name="r_track1" Text="0"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="r_tracks1" Text="0"/></TextBlock>
+                        <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Effect="{DynamicResource DropShadow}">
+                            <Label x:Name="l_titel1" Background="{x:Null}" Padding="0" FontSize="16" FontWeight="Bold" Content="Kein Titel" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
+                            <Label x:Name="l_performer1" Background="{x:Null}" Padding="0" FontSize="16" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
+                            <Label x:Name="l_album1" Background="{x:Null}" Padding="0" FontSize="16" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
+                            <TextBlock TextWrapping="Wrap" Foreground="White" Effect="{DynamicResource DropShadow}"><Run x:Name="r_playlist1"/><Run Text=" "/><Run Text=" "/><Run Text=" "/><Run x:Name="r_track1" Text="0"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="r_tracks1" Text="0"/></TextBlock>
                         </StackPanel>
                     </StackPanel>
                     <Grid x:Name="g_tasten" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="0,-40,0,0">
-                        <Slider x:Name="s_balance" HorizontalAlignment="Left" Margin="184,5,0,0" VerticalAlignment="Top" Width="160" Minimum="-1" ValueChanged="s_balance_ValueChanged" Maximum="1" MouseDoubleClick="s_balance_MouseDoubleClick" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" ToolTip="Pan (L &amp; R)" RenderTransformOrigin="0.5,0.5">
+                        <Slider x:Name="s_balance" HorizontalAlignment="Left" Margin="184,5,0,0" VerticalAlignment="Top" Width="160" Minimum="-1" ValueChanged="s_balance_ValueChanged" Maximum="1" MouseDoubleClick="s_balance_MouseDoubleClick" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" ToolTip="Pan (L &amp; R)" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -622,7 +625,7 @@
                                 </TransformGroup>
                             </Slider.RenderTransform>
                         </Slider>
-                        <Button x:Name="b_zurück" Content="◄◄" Margin="184,33,283,0" Click="b_zurück_Click" VerticalAlignment="Top" Foreground="White" FontSize="22" HorizontalContentAlignment="Center" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10">
+                        <Button x:Name="b_zurück" Content="◄◄" Margin="184,33,283,0" Click="b_zurück_Click" VerticalAlignment="Top" Foreground="White" FontSize="22" HorizontalContentAlignment="Center" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -632,7 +635,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_vor" Content="►►" Margin="296,33,171,0" VerticalAlignment="Top" Click="b_vor_Click" Foreground="White" FontSize="22" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                        <Button x:Name="b_vor" Content="►►" Margin="296,33,171,0" VerticalAlignment="Top" Click="b_vor_Click" Foreground="White" FontSize="22" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -642,7 +645,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_laden" Content="Laden..." Margin="184,73,0,0" HorizontalAlignment="Left" Width="75" Click="b_laden_Click" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14">
+                        <Button x:Name="b_laden" Content="Laden..." Margin="184,73,0,0" HorizontalAlignment="Left" Width="75" Click="b_laden_Click" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Effect="{DynamicResource DropShadow}">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -652,7 +655,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_leeren" Content="Leeren" Margin="269,73,0,0" HorizontalAlignment="Left" Foreground="White" Click="b_leeren_Click" ToolTip="Die Wiedergabe leeren" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Width="75">
+                        <Button x:Name="b_leeren" Content="Leeren" Margin="269,73,0,0" HorizontalAlignment="Left" Foreground="White" Click="b_leeren_Click" ToolTip="Die Wiedergabe leeren" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Width="75" Effect="{DynamicResource DropShadow}">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -662,7 +665,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_play" Content=" ► " FontSize="30" VerticalAlignment="Top" Click="b_play_Click" Margin="237,28,224,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="True" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10">
+                        <Button x:Name="b_play" Content=" ► " FontSize="30" VerticalAlignment="Top" Click="b_play_Click" Margin="237,28,224,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="True" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -672,7 +675,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Label x:Name="l_speed" Content="Geschwindigkeit: 1,00x" Margin="10,0,375,36" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" RenderTransformOrigin="0.5,0.5">
+                        <Label x:Name="l_speed" Content="Geschwindigkeit: 1,00x" Margin="10,0,375,36" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -682,7 +685,7 @@
                                 </TransformGroup>
                             </Label.RenderTransform>
                         </Label>
-                        <Slider x:Name="s_speed" Margin="10,0,368,18" Height="18" VerticalAlignment="Bottom" ValueChanged="s_speed_ValueChanged" MouseDoubleClick="s_speed_MouseDoubleClick" TickPlacement="TopLeft" AutoToolTipPrecision="2" Maximum="2" Value="1" Minimum="0.5" ToolTip="Geschwindigkeit" TickFrequency="0.1" RenderTransformOrigin="0.5,0.5">
+                        <Slider x:Name="s_speed" Margin="10,0,368,18" Height="18" VerticalAlignment="Bottom" ValueChanged="s_speed_ValueChanged" MouseDoubleClick="s_speed_MouseDoubleClick" TickPlacement="TopLeft" AutoToolTipPrecision="2" Maximum="2" Value="1" Minimum="0.5" ToolTip="Geschwindigkeit" TickFrequency="0.1" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -694,7 +697,7 @@
                         </Slider>
                         <StackPanel Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox x:Name="cb_wiederholen" Content="" Margin="0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Playlist wiederholen" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_Wiederholen_Click" Style="{DynamicResource RepeatCBStyle}" BorderBrush="White">
+                                <CheckBox x:Name="cb_wiederholen" Content="" Margin="0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Playlist wiederholen" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_Wiederholen_Click" Style="{DynamicResource RepeatCBStyle}" BorderBrush="White" Effect="{DynamicResource DropShadow}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -704,7 +707,7 @@
                                         </TransformGroup>
                                     </CheckBox.RenderTransform>
                                 </CheckBox>
-                                <CheckBox x:Name="cb_zufall" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" ToolTip="Zufallswiedergabe" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_zufall_Click" Style="{DynamicResource RandomCBStyle}">
+                                <CheckBox x:Name="cb_zufall" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" ToolTip="Zufallswiedergabe" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_zufall_Click" Style="{DynamicResource RandomCBStyle}" Effect="{DynamicResource DropShadow}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -714,7 +717,7 @@
                                         </TransformGroup>
                                     </CheckBox.RenderTransform>
                                 </CheckBox>
-                                <CheckBox x:Name="cb_mute" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Background="White" Foreground="White" ToolTip="Stumm" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_mute_Click" Style="{DynamicResource MuteCBStyle}">
+                                <CheckBox x:Name="cb_mute" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Background="White" Foreground="White" ToolTip="Stumm" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_mute_Click" Style="{DynamicResource MuteCBStyle}" Effect="{DynamicResource DropShadow}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -725,7 +728,7 @@
                                     </CheckBox.RenderTransform>
                                 </CheckBox>
                             </StackPanel>
-                            <CheckBox x:Name="cb_positonmerken" Content="Abspielposition merken" Margin="0,5,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Letzte Wiedergabeposition (im Track) merken" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_positonmerken_Click">
+                            <CheckBox x:Name="cb_positonmerken" Content="Abspielposition merken" Margin="0,5,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Letzte Wiedergabeposition (im Track) merken" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_positonmerken_Click" Effect="{DynamicResource DropShadow}">
                                 <CheckBox.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -764,7 +767,7 @@
                         </TransformGroup>
                     </Slider.RenderTransform>
                 </Slider>
-                <Label x:Name="l_status" Content="Einstellungen laden..." HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FF3AFF00" Margin="0,0,47,63">
+                <Label x:Name="l_status" Content="Einstellungen laden..." HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FF3AFF00" Margin="0,0,47,63" Effect="{DynamicResource DropShadow}">
                     <Label.Triggers>
                         <EventTrigger RoutedEvent="FrameworkElement.Loaded" SourceName="l_status">
                             <BeginStoryboard x:Name="sb">
