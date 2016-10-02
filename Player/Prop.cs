@@ -425,12 +425,16 @@ namespace Player
                     DisableAnimations = Convert.ToBoolean(xd.Root.Element("DisableAnimations").Attribute("value").Value);
                 }
                 Log.Write(string.Format("Einstellungen geladen. ({0}ms)", (DateTime.Now - start).TotalMilliseconds), EventType.Success);
-                if (xd.Root.Attribute("Version") == null || xd.Root.Attribute("Version").Value != CurrentVersion)
-                    View.Dispatcher.Invoke(ShowChangeLog);
+                //if (xd.Root.Attribute("Version") == null || xd.Root.Attribute("Version").Value != CurrentVersion)
+                //    View.Dispatcher.Invoke(ShowChangeLog);
                 Prop.View.Status = null;
             }
             else
+            {
                 Log.Write("Kein Einstellungen gefunden.", EventType.Info);
+            }
+
+            Prop.View.Status = null;
         }
 
         private static void ShowChangeLog()

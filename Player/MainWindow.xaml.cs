@@ -14,6 +14,14 @@ using System.Windows.Media.Animation;
 
 namespace Player
 {
+    public enum State
+    {
+        Collapsed,
+        Expanded,
+        Collapsing,
+        Expanding
+    }
+
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
@@ -23,25 +31,73 @@ namespace Player
         public Codebehind Logic
         { get { return _logic; } set { _logic = value; } }
 
-
         ObservableCollection<Playlist> _playlistview = new ObservableCollection<Playlist>();
         public ObservableCollection<Playlist> Playlistview
         { get { return _playlistview; } }
 
+        DispatcherTimer minitimer = new DispatcherTimer(DispatcherPriority.Normal);
         Storyboard Einklappen;
         Storyboard Ausklappen;
+        State playerstate = State.Expanded;
 
         public MainWindow()
         {
             InitializeComponent();
-        }      
+            minitimer.Interval = TimeSpan.FromSeconds(6);
+            minitimer.Tick += Minitimer_Tick;
+        }
+
+        private void w_player_Initialized(object sender, EventArgs e)
+        {
+            lb_tracks.ItemsSource = Prop.Playlist;
+            lb_playlists.ItemsSource = Playlistview;
+            Prop.View = this;
+            Logic = new Codebehind();
+            Logic.Bootup();
+        }
+
+        public void VisualBootup()
+        {
+            b_hintergrund.RenderTransform = new ScaleTransform();
+            Storyboard start = new Storyboard();
+            DoubleAnimationUsingKeyFrames Anim = new DoubleAnimationUsingKeyFrames();
+            BounceEase f = new BounceEase();
+            f.Bounciness = 5;
+            Anim.KeyFrames.Add(new EasingDoubleKeyFrame(0.1, TimeSpan.FromSeconds(0), f));
+            Anim.KeyFrames.Add(new EasingDoubleKeyFrame(0.1, TimeSpan.FromSeconds(.2), f));
+            Anim.KeyFrames.Add(new EasingDoubleKeyFrame(1, TimeSpan.FromSeconds(.5), f));
+            Storyboard.SetTarget(Anim, b_hintergrund);
+            Storyboard.SetTargetProperty(Anim, new PropertyPath("RenderTransform.ScaleY"));
+            start.Children.Add(Anim);
+            var da = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(.3));
+            Storyboard.SetTarget(da, b_hintergrund);
+            Storyboard.SetTargetProperty(da, new PropertyPath("RenderTransform.ScaleX"));
+            start.Children.Add(da);
+            start.Completed += start_Completed;
+            this.Visibility = Visibility.Visible;
+            start.Begin();
+        }
+
+        void start_Completed(object sender, EventArgs e)
+        {
+            if (!w_player.IsMouseOver && !Prop.DisableAnimations)
+                GetEinklappen().Begin();
+        }
+
+        private void Minitimer_Tick(object sender, EventArgs e)
+        {
+            ((DispatcherTimer)sender).Stop();
+            if (Prop.DisableAnimations)
+                return;
+            GetEinklappen().Begin();
+        }
 
         public Storyboard GetEinklappen()
         {
             double t = 0.3;
             Einklappen = new Storyboard();
             Einklappen.Completed += Einklappen_Completed;
-            Einklappen.BeginTime = TimeSpan.FromSeconds(2);
+            //Einklappen.BeginTime = TimeSpan.FromSeconds(2);
             DoubleAnimationUsingKeyFrames dak = new DoubleAnimationUsingKeyFrames();
             dak.KeyFrames.Add(new EasingDoubleKeyFrame(g_info.ActualHeight, TimeSpan.FromSeconds(t), new CubicEase(){EasingMode = EasingMode.EaseOut}));
             Storyboard.SetTarget(dak, g_controls as DependencyObject);
@@ -65,9 +121,43 @@ namespace Player
 
         void Einklappen_Completed(object sender, EventArgs e)
         {
-            Einklappen = null;
-            Console.WriteLine("Ended");
             g_controls.Visibility = Visibility.Collapsed;
+            playerstate = State.Collapsed;
+        }
+
+        public Storyboard GetAusklappen()
+        {
+            Console.WriteLine("Neues Ausklappen");
+            double t = 0.3;
+            Ausklappen = new Storyboard();
+            //Ausklappen.Duration = TimeSpan.FromSeconds(t);
+            Ausklappen.Completed += Ausklappen_Completed;
+            DoubleAnimationUsingKeyFrames dak = new DoubleAnimationUsingKeyFrames();
+            dak.KeyFrames.Add(new EasingDoubleKeyFrame(360, TimeSpan.FromSeconds(t), new CubicEase() { EasingMode = EasingMode.EaseOut }));
+            Storyboard.SetTarget(dak, g_controls as DependencyObject);
+            Storyboard.SetTargetProperty(dak, new PropertyPath(Grid.HeightProperty));
+            Ausklappen.Children.Add(dak);
+            dak = new DoubleAnimationUsingKeyFrames();
+            dak.KeyFrames.Add(new EasingDoubleKeyFrame(600, TimeSpan.FromSeconds(t), new CubicEase() { EasingMode = EasingMode.EaseOut }));
+            Storyboard.SetTarget(dak, g_controls as DependencyObject);
+            Storyboard.SetTargetProperty(dak, new PropertyPath(Grid.WidthProperty));
+            Ausklappen.Children.Add(dak);
+            var da = new DoubleAnimation(1, TimeSpan.FromSeconds(t));
+            Storyboard.SetTarget(da, g_controls as DependencyObject);
+            Storyboard.SetTargetProperty(da, new PropertyPath(Grid.OpacityProperty));
+            Ausklappen.Children.Add(da);
+            da = new DoubleAnimation(0, TimeSpan.FromSeconds(t));
+            Storyboard.SetTarget(da, g_info as DependencyObject);
+            Storyboard.SetTargetProperty(da, new PropertyPath(Grid.OpacityProperty));
+            Ausklappen.Children.Add(da);
+            g_controls.Visibility = Visibility.Visible;
+            return Ausklappen;
+        }
+
+        void Ausklappen_Completed(object sender, EventArgs e)
+        {
+            Prop.Track = Prop.Track;
+            playerstate = State.Expanded;
         }
 
         public string Titel
@@ -222,100 +312,6 @@ namespace Player
                     l_status.Content = value;
                 });
             }
-        }
-
-        private void w_player_Initialized(object sender, EventArgs e)
-        {
-            lb_tracks.ItemsSource = Prop.Playlist;
-            lb_playlists.ItemsSource = Playlistview;
-            Prop.View = this;
-            Logic = new Codebehind();
-            Logic.Bootup();            
-        }
-
-        public void VisualBootup()
-        {
-            b_hintergrund.RenderTransform = new ScaleTransform();
-            Storyboard start = new Storyboard();
-            DoubleAnimationUsingKeyFrames Anim = new DoubleAnimationUsingKeyFrames();
-            BounceEase f = new BounceEase();
-            f.Bounciness = 5;
-            Anim.KeyFrames.Add(new EasingDoubleKeyFrame(0.1, TimeSpan.FromSeconds(0), f));
-            Anim.KeyFrames.Add(new EasingDoubleKeyFrame(0.1, TimeSpan.FromSeconds(.2), f));
-            Anim.KeyFrames.Add(new EasingDoubleKeyFrame(1, TimeSpan.FromSeconds(.5), f));
-            Storyboard.SetTarget(Anim, b_hintergrund);
-            Storyboard.SetTargetProperty(Anim, new PropertyPath("RenderTransform.ScaleY"));
-            start.Children.Add(Anim);
-            var da = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(.3));
-            Storyboard.SetTarget(da, b_hintergrund);
-            Storyboard.SetTargetProperty(da, new PropertyPath("RenderTransform.ScaleX"));
-            start.Children.Add(da);
-            start.Completed += start_Completed;
-            this.Visibility = Visibility.Visible;
-            start.Begin();
-        }
-
-        void start_Completed(object sender, EventArgs e)
-        {
-            if (!w_player.IsMouseOver && !Prop.DisableAnimations)
-                GetEinklappen().Begin();
-        }
-
-        private void w_player_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (Ausklappen != null)
-            {
-                return;
-            }
-            if (Einklappen != null)
-            {
-                Einklappen.Stop();
-                Einklappen = null;
-            }
-            if (g_controls.Width < 600)
-                GetAusklappen().Begin();
-        }
-
-        public Storyboard GetAusklappen()
-        {
-            Console.WriteLine("Neues Ausklappen");
-            double t = 0.3;
-            Ausklappen = new Storyboard();
-            //Ausklappen.Duration = TimeSpan.FromSeconds(t);
-            Ausklappen.Completed += Ausklappen_Completed;
-            DoubleAnimationUsingKeyFrames dak = new DoubleAnimationUsingKeyFrames();
-            dak.KeyFrames.Add(new EasingDoubleKeyFrame(360, TimeSpan.FromSeconds(t), new CubicEase() { EasingMode = EasingMode.EaseOut}));
-            Storyboard.SetTarget(dak, g_controls as DependencyObject);
-            Storyboard.SetTargetProperty(dak, new PropertyPath(Grid.HeightProperty));
-            Ausklappen.Children.Add(dak);
-            dak = new DoubleAnimationUsingKeyFrames();
-            dak.KeyFrames.Add(new EasingDoubleKeyFrame(600, TimeSpan.FromSeconds(t), new CubicEase() { EasingMode = EasingMode.EaseOut }));
-            Storyboard.SetTarget(dak, g_controls as DependencyObject);
-            Storyboard.SetTargetProperty(dak, new PropertyPath(Grid.WidthProperty));
-            Ausklappen.Children.Add(dak);
-            var da = new DoubleAnimation(1, TimeSpan.FromSeconds(t));
-            Storyboard.SetTarget(da, g_controls as DependencyObject);
-            Storyboard.SetTargetProperty(da, new PropertyPath(Grid.OpacityProperty));
-            Ausklappen.Children.Add(da);
-            da = new DoubleAnimation(0, TimeSpan.FromSeconds(t));
-            Storyboard.SetTarget(da, g_info as DependencyObject);
-            Storyboard.SetTargetProperty(da, new PropertyPath(Grid.OpacityProperty));
-            Ausklappen.Children.Add(da);
-            g_controls.Visibility = Visibility.Visible;
-            return Ausklappen;
-        }
-
-        void Ausklappen_Completed(object sender, EventArgs e)
-        {
-            Ausklappen = null;
-            Prop.Track = Prop.Track;
-        }
-
-        private void w_player_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (Prop.DisableAnimations)
-                return;
-            GetEinklappen().Begin();
         }
 
         private void w_player_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -773,6 +769,20 @@ namespace Player
         private void mi_tags_Click(object sender, RoutedEventArgs e)
         {
             Logic.EditTrack(lb_tracks.SelectedItem as Track);
+        }
+
+        private void w_player_PreviewMouseMove(object sender, MouseEventArgs e)
+        {     
+            if (playerstate.Equals(State.Collapsing) || playerstate.Equals(State.Expanding))
+            {
+                return;
+            }
+            if (playerstate.Equals(State.Collapsed))
+            {
+                GetAusklappen().Begin();
+            }
+            minitimer.Stop();
+            minitimer.Start();      
         }
     }
 }

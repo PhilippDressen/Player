@@ -166,7 +166,7 @@ namespace Player
 
         void MediaPlayer_MediaEnded(object sender, EventArgs e)
         {
-            //nächsten Track abspielen (Bedingungen der Next() Funktion)
+            //nächsten Track abspielen (Bedingungen der Next() Methode)
             Next();
         }
 
