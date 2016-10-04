@@ -43,7 +43,7 @@ namespace Player
         public MainWindow()
         {
             InitializeComponent();
-            minitimer.Interval = TimeSpan.FromSeconds(6);
+            minitimer.Interval = TimeSpan.FromSeconds(3);
             minitimer.Tick += Minitimer_Tick;
         }
 

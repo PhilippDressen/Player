@@ -118,14 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChangeLog" xml:space="preserve">
-    <value>Changes:
-• Laden großer Titelmengen extrem verschnellert
-• Laden von Tags &amp; Covers im Hintergrund
-• Oberfläche überarbeitet
-• Logging ausgebaut
-
-Known Issues:
-• Fehlskalierung des Icons im Windows-Mixer</value>
+    <value />
     <comment>ChangeLogText</comment>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

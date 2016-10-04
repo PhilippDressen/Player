@@ -61,14 +61,7 @@ namespace Player.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Changes:
-        ///• Laden großer Titelmengen extrem verschnellert
-        ///• Laden von Tags &amp; Covers im Hintergrund
-        ///• Oberfläche überarbeitet
-        ///• Logging ausgebaut
-        ///
-        ///Known Issues:
-        ///• Fehlskalierung des Icons im Windows-Mixer ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
         internal static string ChangeLog {
             get {
