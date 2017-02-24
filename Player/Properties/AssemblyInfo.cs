@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Player")]
 [assembly: AssemblyCopyright("Copyright © Philipp Dreßen 2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Philipp Dreßen")]
 [assembly: AssemblyCulture("")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 

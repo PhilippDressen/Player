@@ -17,9 +17,10 @@ using System.Media;
 using System.Windows.Media.Imaging;
 using System.Threading;
 using System.Deployment.Application;
+using Player.Views;
 
 
-namespace Player
+namespace Player.Controllers
 {
     /// <summary>
     /// statische Ressourcen
@@ -74,8 +75,8 @@ namespace Player
             { return _playlist;   }
         }
 
-        static MainWindow _view;
-        public static MainWindow View
+        static MainWindowView _view;
+        public static MainWindowView View
         {
             get
             {

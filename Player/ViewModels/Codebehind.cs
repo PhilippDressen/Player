@@ -14,8 +14,10 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using System.Windows.Media.Imaging;
+using Player.Controllers;
+using Player.Views;
 
-namespace Player
+namespace Player.ViewModels
 {
     /// <summary>
     /// Businesslogik

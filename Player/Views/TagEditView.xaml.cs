@@ -16,8 +16,9 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using TagLib.Id3v2;
 using System.IO;
+using Player.Controllers;
 
-namespace Player
+namespace Player.Views
 {
     /// <summary>
     /// Interaktionslogik für TagEditView.xaml

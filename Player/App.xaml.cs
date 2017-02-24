@@ -8,6 +8,7 @@ using System.Windows;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Security.Principal;
+using Player.Controllers;
 
 namespace Player
 {

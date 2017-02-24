@@ -33,7 +33,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>78</ApplicationRevision>
+    <ApplicationRevision>80</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -61,8 +61,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>iconmini.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>AF93370BC7F663DB8A3F9C81E3B1BDD07D996E42</ManifestCertificateThumbprint>
@@ -75,6 +74,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="policy.2.0.taglib-sharp">
@@ -107,31 +109,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Dialog.xaml.cs">
-      <DependentUpon>Dialog.xaml</DependentUpon>
+    <Compile Include="Views\DialogView.xaml.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Info.xaml.cs">
-      <DependentUpon>Info.xaml</DependentUpon>
+    <Compile Include="Views\InfoView.xaml.cs">
+      <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="NeuePlaylistView.xaml.cs">
+    <Compile Include="Helpers\NativeMethods.cs" />
+    <Compile Include="Helpers\Log.cs" />
+    <Compile Include="Views\NeuePlaylistView.xaml.cs">
       <DependentUpon>NeuePlaylistView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Selector.cs" />
-    <Compile Include="TagEditView.xaml.cs">
+    <Compile Include="Models\Selector.cs" />
+    <Compile Include="Views\TagEditView.xaml.cs">
       <DependentUpon>TagEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Track.cs" />
-    <Page Include="Dialog.xaml">
+    <Compile Include="Models\Track.cs" />
+    <Page Include="Views\DialogView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Info.xaml">
+    <Page Include="Views\InfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -139,23 +141,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Codebehind.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="ViewModels\Codebehind.cs" />
+    <Compile Include="Views\MainWindowView.xaml.cs">
+      <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NeuePlaylistView.xaml">
+    <Page Include="Views\NeuePlaylistView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TagEditView.xaml">
+    <Page Include="Views\TagEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Playlist.cs" />
-    <Compile Include="Prop.cs" />
+    <Compile Include="Models\Playlist.cs" />
+    <Compile Include="Controllers\Prop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

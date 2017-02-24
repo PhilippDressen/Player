@@ -11,8 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
+using Player.ViewModels;
+using Player.Controllers;
 
-namespace Player
+namespace Player.Views
 {
     public enum State
     {
@@ -25,7 +27,7 @@ namespace Player
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindowView : Window
     {
         Codebehind _logic;
         public Codebehind Logic
@@ -40,7 +42,7 @@ namespace Player
         Storyboard Ausklappen;
         State playerstate = State.Expanded;
 
-        public MainWindow()
+        public MainWindowView()
         {
             InitializeComponent();
             minitimer.Interval = TimeSpan.FromSeconds(3);
