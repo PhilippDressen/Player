@@ -72,9 +72,9 @@ namespace Player.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
-        internal static System.Drawing.Icon icon {
+        internal static System.Drawing.Icon iconmini {
             get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                object obj = ResourceManager.GetObject("iconmini", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Windows.Media.Imaging;
 
 namespace Player
 {
@@ -24,6 +25,11 @@ namespace Player
         DispatcherTimer uitimer = new DispatcherTimer(DispatcherPriority.Background);
         System.Windows.Forms.NotifyIcon Tbi = new System.Windows.Forms.NotifyIcon();
         NativeMethods KH;
+
+        public BitmapImage Icon
+        {
+            get; set;
+        }
 
         public void Dispose()
         {
@@ -52,7 +58,7 @@ namespace Player
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             try
             {
-                Tbi.Icon = Properties.Resources.icon;
+                Tbi.Icon = Properties.Resources.iconmini;
                 Tbi.Visible = true;
                 System.Windows.Forms.MenuItem mi_hide = new System.Windows.Forms.MenuItem();
                 mi_hide.Text = "Verstecken";
@@ -225,7 +231,7 @@ namespace Player
         {
             //Logik hochfahren            
             Log.Write("Anwendung gestartet. Version: " + Prop.CurrentVersion, EventType.Info);
-
+            Icon = new BitmapImage(new Uri("icon.ico", UriKind.RelativeOrAbsolute));
             new Thread(EinstellungenInitialisieren).Start();            
         }
 

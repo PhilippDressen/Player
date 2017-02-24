@@ -209,9 +209,10 @@ namespace Player
                         i_minicover.Source = value;
                     }
                     else
-                    {                        
-                        i_cover.Source = Icon;
-                        i_minicover.Source = Icon;                        
+                    {
+                        
+                        i_cover.Source = Logic.Icon;
+                        i_minicover.Source = Logic.Icon;                        
                     }
                     DoubleAnimation da = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(1));
                     i_cover.BeginAnimation(Image.OpacityProperty, da);

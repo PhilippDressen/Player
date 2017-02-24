@@ -5,7 +5,7 @@
     <Application.Resources>
         <DataTemplate x:Key="TrackTemplate">
             <StackPanel HorizontalAlignment="Stretch"  Height="Auto" Margin="0" VerticalAlignment="Stretch" Width="Auto" Orientation="Horizontal" TextSearch.TextPath="{Binding Path=Title, Mode=OneWay}" MaxHeight="60" DataContext="{Binding}">
-                <Image x:Name="i_cover" HorizontalAlignment="Left" Height="Auto" Margin="0" VerticalAlignment="Stretch" Width="Auto" Source="{Binding AlbumArt, TargetNullValue = icon.ico }" Stretch="Uniform" DataContext="{Binding}"/>
+                <Image x:Name="i_cover" HorizontalAlignment="Left" Height="Auto" Margin="0" VerticalAlignment="Stretch" Width="Auto" Source="{Binding AlbumArt, TargetNullValue=icon.ico }" Stretch="Uniform" DataContext="{Binding}"/>
                 <StackPanel HorizontalAlignment="Left" Height="Auto" Margin="5,0,0,0" VerticalAlignment="Center" Width="Auto" Orientation="Vertical" DataContext="{Binding}">
                     <Label x:Name="l_title" TextSearch.Text="{Binding Path=Title, Mode=OneWay}"  Content="{Binding Title}"  HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" FontSize="14" Padding="2" FontWeight="Bold" DataContext="{Binding}"/>
                     <Label x:Name="l_performer" Content="{Binding Performer}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFD1D1D1" Padding="2" DataContext="{Binding}"/>
