@@ -16,17 +16,44 @@ using System.Net.Mail;
 using System.Windows.Media.Imaging;
 using Player.Controllers;
 using Player.Views;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Player.ViewModels
 {
     /// <summary>
     /// Businesslogik
     /// </summary>
-    public class Codebehind :IDisposable
+    public class MainViewModel :IDisposable, INotifyPropertyChanged
     {
         DispatcherTimer uitimer = new DispatcherTimer(DispatcherPriority.Background);
         System.Windows.Forms.NotifyIcon Tbi = new System.Windows.Forms.NotifyIcon();
         NativeMethods KH;
+
+        #region events
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName]string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        #endregion
+
+        #region properties
+        private BitmapImage albumart;
+        public BitmapImage AlbumArt
+        {
+            get
+            {
+                return albumart;
+            }
+            set
+            {
+                albumart = value;
+                NotifyPropertyChanged();
+            }
+        }
+        #endregion
 
         public BitmapImage Icon
         {
@@ -49,14 +76,14 @@ namespace Player.ViewModels
             KH.Dispose();
         }
 
-        public Codebehind()
+        public MainViewModel()
         {
             //erstellen der Logik & anhängen der Ereignishandler
-            Prop.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
-            Prop.MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
+            PlayController.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+            PlayController.MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             uitimer.Interval = TimeSpan.FromSeconds(0.5);
             uitimer.Tick += UIAktualisieren;
-            Prop.OpenTracksDialog.FileOk += OpenTracksDialog_FileOk;
+            PlayController.OpenTracksDialog.FileOk += OpenTracksDialog_FileOk;
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             try
             {
@@ -72,7 +99,7 @@ namespace Player.ViewModels
                 Tbi.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[] { mi_hide , mi_close });
                 Tbi.ContextMenu.Popup += (o, i)=>
                     {
-                        if (Prop.View.IsVisible)
+                        if (PlayController.View.IsVisible)
                             mi_hide.Text = "Verstecken";
                         else
                             mi_hide.Text = "Anzeigen";
@@ -87,28 +114,28 @@ namespace Player.ViewModels
 
         private void Tbi_DoubleClick(object sender, EventArgs e)
         {
-            if (!Prop.View.IsVisible)
+            if (!PlayController.View.IsVisible)
             {                
-                Prop.View.Show();
+                PlayController.View.Show();
             }
-            Prop.View.Activate();
-            Prop.View.GetAusklappen().Begin();
+            PlayController.View.Activate();
+            PlayController.View.GetAusklappen().Begin();
         }
 
         private void mi_close_Click(object sender, EventArgs e)
         {
-            Prop.View.Close();
+            PlayController.View.Close();
         }
 
         private void mi_hide_Click(object sender, EventArgs e)
         {
-            if (Prop.View.IsVisible)
+            if (PlayController.View.IsVisible)
             {
-                Prop.View.Hide();
+                PlayController.View.Hide();
             }
             else
             {
-                Prop.View.Show();                
+                PlayController.View.Show();                
             }
         }
 
@@ -124,7 +151,7 @@ namespace Player.ViewModels
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("Stacktrace:");
                     sb.AppendLine(e.Exception.ToString());
-                    sb.AppendLine("Tracks: " + Prop.Playlist.Count);
+                    sb.AppendLine("Tracks: " + PlayController.Playlist.Count);
                     sb.AppendLine("OS: " + Environment.OSVersion);
                     sb.AppendLine("Cores: " + Environment.ProcessorCount);
                     sb.AppendLine("64Bit: " + Environment.Is64BitOperatingSystem);
@@ -149,27 +176,27 @@ namespace Player.ViewModels
         void UIAktualisieren(object sender, EventArgs e)
         {
             //UI Anzeige während der Wiedergabe mit Timer updaten
-            Prop.Position = Prop.MediaPlayer.Position;
-            Prop.View.l_zeit.Content = DateTime.Now.ToString("dddd", CultureInfo.InstalledUICulture) + DateTime.Now.ToString(@" dd/MM/yyyy HH\:mm\:ss") + " KW: " + CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+            PlayController.Position = PlayController.MediaPlayer.Position;
+            PlayController.View.l_zeit.Content = DateTime.Now.ToString("dddd", CultureInfo.InstalledUICulture) + DateTime.Now.ToString(@" dd/MM/yyyy HH\:mm\:ss") + " KW: " + CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
         }
 
         void MediaPlayer_MediaOpened(object sender, EventArgs e)
         {
             //göffneten Track im UI Darstellen
-            Track t = Prop.Playlist[Prop.Track];
-            Prop.View.Titel = t.Title;
-            Prop.View.Interpret = t.Performer;
-            Prop.View.Album = t.Album;
-            Prop.View.Cover = t.AlbumArt;
-            Prop.MediaPlayer.Volume = Prop.Volume;
+            Track t = PlayController.Playlist[PlayController.Track];
+            PlayController.View.Titel = t.Title;
+            PlayController.View.Interpret = t.Performer;
+            PlayController.View.Album = t.Album;
+            AlbumArt = t.AlbumArt;
+            PlayController.MediaPlayer.Volume = PlayController.Volume;
             string s = string.Format("{0} von {1}", t.Title, t.Performer);
             if (s.Length >= 64)
                 s = s.Substring(0, 63);
             Tbi.Text = s;
-            if (Prop.MediaPlayer.NaturalDuration.HasTimeSpan)
-                Prop.View.Länge = Prop.MediaPlayer.NaturalDuration.TimeSpan;
+            if (PlayController.MediaPlayer.NaturalDuration.HasTimeSpan)
+                PlayController.View.Länge = PlayController.MediaPlayer.NaturalDuration.TimeSpan;
             else
-                Prop.View.Länge = new TimeSpan();
+                PlayController.View.Länge = new TimeSpan();
         }
 
         void MediaPlayer_MediaEnded(object sender, EventArgs e)
@@ -183,9 +210,9 @@ namespace Player.ViewModels
             //Logik herunterfahren
 
             //Playlist speichern, wenn Name und min 1 Track drin
-            if (!(string.IsNullOrWhiteSpace(Prop.Playlistpath) && Prop.Playlist.Count == 0))
+            if (!(string.IsNullOrWhiteSpace(PlayController.Playlistpath) && PlayController.Playlist.Count == 0))
             {
-                if (string.IsNullOrWhiteSpace(Prop.Playlistpath))
+                if (string.IsNullOrWhiteSpace(PlayController.Playlistpath))
                 {
                     //Kein Speichername für Playlist
                     if (Dialog.GetResult("Möchten Sie eine Playlist erstellen, damit die aktuelle Wiedergabe nicht verloren geht?"))
@@ -194,18 +221,18 @@ namespace Player.ViewModels
                         String s = NeuePlaylistView.GetResult();
                         //Wenn gültiger Name angegeben speichern
                         if (!string.IsNullOrWhiteSpace(s))
-                            Prop.Playlistpath = Playlist.SaveToPlaylist(Prop.Playlist, Path.Combine(Prop.PlaylistFolder, s + ".plst")).Path;
+                            PlayController.Playlistpath = Playlist.SaveToPlaylist(PlayController.Playlist, Path.Combine(PlayController.PlaylistFolder, s + ".plst")).Path;
                     }
                 }
                 else
                 {
                     //Playlistname bekannt -> Speichern
-                    if (Prop.Playlist.Count > 0)
+                    if (PlayController.Playlist.Count > 0)
                     {
                         try
                         {
                             //Playlist schreiben
-                            Playlist.SaveToPlaylist(Prop.Playlist, Prop.Playlistpath);
+                            Playlist.SaveToPlaylist(PlayController.Playlist, PlayController.Playlistpath);
                         }
                         catch (Exception ex)
                         {
@@ -219,7 +246,7 @@ namespace Player.ViewModels
             try
             {
                 //Speichern
-                Prop.Speichern();
+                PlayController.Speichern();
             }
             catch (Exception ex)
             {
@@ -232,26 +259,26 @@ namespace Player.ViewModels
         public void Bootup()
         {
             //Logik hochfahren            
-            Log.Write("Anwendung gestartet. Version: " + Prop.CurrentVersion, EventType.Info);
-            Icon = new BitmapImage(new Uri("icon.ico", UriKind.RelativeOrAbsolute));
+            Log.Write("Anwendung gestartet. Version: " + PlayController.CurrentVersion, EventType.Info);
+            Icon = new BitmapImage(new Uri("/icon.ico", UriKind.RelativeOrAbsolute));
             new Thread(EinstellungenInitialisieren).Start();            
         }
 
         private void EinstellungenInitialisieren()
         {
-            App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-            Prop.View.Busy = true;
+            App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+            PlayController.View.Busy = true;
             try
             {
                 //Einstellungen laden
-                Prop.Laden();
+                PlayController.Laden();
             }
             catch (Exception ex)
             {
                 Log.Write(ex.ToString(), EventType.Error);
                 App.Current.Dispatcher.Invoke(() => Info.Show("Einstellungen konnten nicht geladen werden"));
             }
-            Prop.View.Dispatcher.Invoke(Prop.View.VisualBootup);
+            PlayController.View.Dispatcher.Invoke(PlayController.View.VisualBootup);
 
             try
             {
@@ -271,22 +298,22 @@ namespace Player.ViewModels
                 {
                     //Playlist in "Öffnen mit" -> Einstellungen
                     Log.Write(string.Format("Playlist öffnen mit \"{0}\" ...", args[1]), EventType.Info);
-                    Prop.Playlistpath = args[1];
-                    Prop.Track = 0;
-                    Prop.Playing = true;
-                    Prop.Position = new TimeSpan();
-                    Prop.Muting = false;
+                    PlayController.Playlistpath = args[1];
+                    PlayController.Track = 0;
+                    PlayController.Playing = true;
+                    PlayController.Position = new TimeSpan();
+                    PlayController.Muting = false;
                 }
                 else
                 {
                     //Erstes Argument keine Playlist
                     Log.Write(string.Format("Tracks öffnen mit ({0}) ...", args.Length - 1), EventType.Info);
                     string[] files = args.Skip(1).ToArray();
-                    Prop.Playlistpath = null;
-                    Prop.Track = 0;
-                    Prop.Playing = true;
-                    Prop.Position = new TimeSpan();
-                    Prop.Muting = false;
+                    PlayController.Playlistpath = null;
+                    PlayController.Track = 0;
+                    PlayController.Playing = true;
+                    PlayController.Position = new TimeSpan();
+                    PlayController.Muting = false;
                     AddTracks(files);
                 }
             }
@@ -295,39 +322,39 @@ namespace Player.ViewModels
                 //Keine Argumente -> letzte Playlist laden, wenn da (nichts ändern)                   
             }
 
-            if (!string.IsNullOrEmpty(Prop.Playlistpath))
+            if (!string.IsNullOrEmpty(PlayController.Playlistpath))
             {
                 try
                 {
                     //Playlist in Einstellungen Laden
-                    LoadPlaylist(Prop.Playlistpath);
-                    Log.Write(string.Format("Playlist \"{0}\" geladen!", Prop.Playlistpath), EventType.Success);
+                    LoadPlaylist(PlayController.Playlistpath);
+                    Log.Write(string.Format("Playlist \"{0}\" geladen!", PlayController.Playlistpath), EventType.Success);
                 }
                 catch (Exception ex)
                 {
                     Log.Write("Playlist konnte nicht geladen werden!" + Environment.NewLine + ex.ToString(), EventType.Error);
-                    App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("Playlist {0} konnte nicht geladen werden!", Prop.Playlistpath)));
-                    Prop.Playlistpath = null;
+                    App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("Playlist {0} konnte nicht geladen werden!", PlayController.Playlistpath)));
+                    PlayController.Playlistpath = null;
                 }
 
                 //Letzten Track laden, wenn da
-                if (Prop.Track < Prop.Playlist.Count)
+                if (PlayController.Track < PlayController.Playlist.Count)
                 {
-                    App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
+                    App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
                     App.Current.Dispatcher.Invoke(() =>
                     {
-                        if (Prop.Playing && Prop.Playlist.Count > 0)
+                        if (PlayController.Playing && PlayController.Playlist.Count > 0)
                         {
                             //Abspielen wenn abspielend gespeichert und Track gültig
-                            Prop.MediaPlayer.Play();
+                            PlayController.MediaPlayer.Play();
                         }
                         else
-                            Prop.Playing = false;
+                            PlayController.Playing = false;
 
                         //Position laden, wenn eingestellt
-                        if (Prop.RememberPosition)
-                            Prop.MediaPlayer.Position = Prop.Position;
+                        if (PlayController.RememberPosition)
+                            PlayController.MediaPlayer.Position = PlayController.Position;
                     });
                 }
             }
@@ -349,8 +376,8 @@ namespace Player.ViewModels
 
             //UI aktivieren
             uitimer.Start();
-            App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
-            Prop.View.Busy = false;
+            App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
+            PlayController.View.Busy = false;
             Log.Write("UI-Rendering gestartet!", EventType.Success);
             Log.Write("Initialisierung abgeschlossen!", EventType.Info);
         }
@@ -360,7 +387,7 @@ namespace Player.ViewModels
             switch (key)
             {
                 case ConsoleKey.Add:
-                    if (Prop.Playing)
+                    if (PlayController.Playing)
                         Pause();
                     else
                         Play();
@@ -372,7 +399,7 @@ namespace Player.ViewModels
                     Previous();
                     break;
                 case ConsoleKey.MediaPlay:
-                    if (Prop.Playing)
+                    if (PlayController.Playing)
                         Pause();
                     else
                         Play();
@@ -391,14 +418,14 @@ namespace Player.ViewModels
 
         public void AddTracks()
         {           
-            Prop.OpenTracksDialog.ShowDialog();
+            PlayController.OpenTracksDialog.ShowDialog();
         }
 
         void OpenTracksDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Prop.View.Status = "Tracks werden geladen...";
-            Prop.View.Busy = true;
-            var adds = Prop.OpenTracksDialog.FileNames;
+            PlayController.View.Status = "Tracks werden geladen...";
+            PlayController.View.Busy = true;
+            var adds = PlayController.OpenTracksDialog.FileNames;
             //if (adds.Length == 0)
             //{
             //    Prop.View.Busy = false;
@@ -418,13 +445,13 @@ namespace Player.ViewModels
                         Track t = new Track();
                         t.Path = path;
                         t.Title = Path.GetFileNameWithoutExtension(path);
-                        Prop.View.Dispatcher.Invoke(() => Prop.Playlist.Add(t));
-                        if (Prop.Playlist.Count == 1)
+                        PlayController.View.Dispatcher.Invoke(() => PlayController.Playlist.Add(t));
+                        if (PlayController.Playlist.Count == 1)
                         {
-                            Prop.Track = 0;
-                            App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                            App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                            Prop.Playing = true;
+                            PlayController.Track = 0;
+                            App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                            App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                            PlayController.Playing = true;
                         }
                     }
                     catch (Exception ex)
@@ -442,9 +469,9 @@ namespace Player.ViewModels
                     App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("{0} Tracks konnten nicht geladen werden.", fails.Count)));
                 //App.Current.Dispatcher.Invoke(Prop.NewDialog);
                 //Prop.View.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
-                Prop.View.Busy = false;
-                Prop.View.Tracks = Prop.Playlist.Count;
-                Prop.View.Status = null;
+                PlayController.View.Busy = false;
+                PlayController.View.Tracks = PlayController.Playlist.Count;
+                PlayController.View.Status = null;
                 LoadTags();
             }).Start();
         }        
@@ -453,8 +480,8 @@ namespace Player.ViewModels
         {
             if (trackpaths.Length == 0)
                 return;
-            Prop.View.Busy = true;
-            Prop.View.Status = "Tracks werden geladen...";
+            PlayController.View.Busy = true;
+            PlayController.View.Status = "Tracks werden geladen...";
             new Thread(() =>
             {
                 List<string> fails = new List<string>();
@@ -466,7 +493,7 @@ namespace Player.ViewModels
                         Track t = new Track();
                         t.Path = path;
                         t.Title = Path.GetFileNameWithoutExtension(path);
-                        Prop.View.Dispatcher.Invoke(() => Prop.Playlist.Add(t));
+                        PlayController.View.Dispatcher.Invoke(() => PlayController.Playlist.Add(t));
                     }
                     catch (Exception ex)
                     {
@@ -475,162 +502,162 @@ namespace Player.ViewModels
                     }
                 }
                 Log.Write(string.Format("{0} Tracks erfolgreich geladen. {1} Fehler. ({2}ms)", trackpaths.Length - fails.Count, fails.Count, (DateTime.Now - start).TotalMilliseconds), EventType.Success);
-                if (Prop.Playlist.Count == trackpaths.Length && trackpaths.Length > 0)
+                if (PlayController.Playlist.Count == trackpaths.Length && trackpaths.Length > 0)
                 {
-                    Prop.Track = 0;
-                    Prop.View.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                    Prop.View.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
-                    Prop.Playing = true;
-                    Prop.View.Dispatcher.Invoke(Prop.View.TracksAusklappen);
+                    PlayController.Track = 0;
+                    PlayController.View.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                    PlayController.View.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
+                    PlayController.Playing = true;
+                    PlayController.View.Dispatcher.Invoke(PlayController.View.TracksAusklappen);
                 }
                 if (fails.Count < 5)
                     foreach (string s in fails)
                         App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("Der Track {0} konnte nicht geladen werden.", s)));
                 else
                     App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("{0} Tracks konnten nicht geladen werden.", fails.Count)));
-                Prop.View.Busy = false;
-                Prop.View.Tracks = Prop.Playlist.Count;
-                Prop.View.Status = null;
+                PlayController.View.Busy = false;
+                PlayController.View.Tracks = PlayController.Playlist.Count;
+                PlayController.View.Status = null;
                 LoadTags();
             }).Start();
         }
 
         public void RemoveTrack(Track t)
         {
-            if (t != null && Prop.Playlist.Contains(t))
+            if (t != null && PlayController.Playlist.Contains(t))
             {
                 try
                 {
-                    int i = Prop.Playlist.IndexOf(t);
-                    Prop.View.Dispatcher.Invoke(() => Prop.Playlist.Remove(t));
-                    if (i < Prop.Track)
-                        Prop.Track--;
+                    int i = PlayController.Playlist.IndexOf(t);
+                    PlayController.View.Dispatcher.Invoke(() => PlayController.Playlist.Remove(t));
+                    if (i < PlayController.Track)
+                        PlayController.Track--;
                     else
                     {
-                        if (i == Prop.Track)
+                        if (i == PlayController.Track)
                         {
                             SetPosition(new TimeSpan());
                             Previous();
                         }
                     }
-                    Prop.View.Tracks = Prop.Playlist.Count;
+                    PlayController.View.Tracks = PlayController.Playlist.Count;
                 }
                 catch (Exception ex)
                 {
                     Log.Write(string.Format("Fehler beim Löschen vom Track \"{0}\" \n {1}", t.Path, ex), EventType.Error);
-                    Prop.View.Dispatcher.Invoke(() => Info.Show("Fehler beim Löschen /n" + ex.Message));
+                    PlayController.View.Dispatcher.Invoke(() => Info.Show("Fehler beim Löschen /n" + ex.Message));
                 }
             }
         }
 
         public void Next()
         {
-            if (Prop.Random && Prop.Playlist.Count > 0)
+            if (PlayController.Random && PlayController.Playlist.Count > 0)
             {
-                Prop.Track = Prop.RandomGen.Next(Prop.Playlist.Count - 1);
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                if (Prop.Playing)
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
+                PlayController.Track = PlayController.RandomGen.Next(PlayController.Playlist.Count - 1);
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                if (PlayController.Playing)
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
                 return;
             }
 
-            if (Prop.Track + 1 < Prop.Playlist.Count)
+            if (PlayController.Track + 1 < PlayController.Playlist.Count)
             {
-                Prop.Track++;
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                if (Prop.Playing)
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
+                PlayController.Track++;
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                if (PlayController.Playing)
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
             }
             else
             {
-                if (Prop.Playlist.Count > 0 && Prop.Repeat)
+                if (PlayController.Playlist.Count > 0 && PlayController.Repeat)
                 {
-                    Prop.Track = 0;
-                    App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                    if (Prop.Playing)
-                        App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                    App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
+                    PlayController.Track = 0;
+                    App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                    if (PlayController.Playing)
+                        App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                    App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
                 }
                 else
                 {
-                    Prop.Playing = false;
+                    PlayController.Playing = false;
                 }
             }
         }
 
         public void Previous()
         {
-            if (Prop.MediaPlayer.Position > TimeSpan.FromSeconds(3))
+            if (PlayController.MediaPlayer.Position > TimeSpan.FromSeconds(3))
             {
                 SetPosition(TimeSpan.FromSeconds(0));
                 return;
             }
-            if (Prop.Track - 1 >= 0)
+            if (PlayController.Track - 1 >= 0)
             {
-                Prop.Track--;
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                if (Prop.Playing)
-                    App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
+                PlayController.Track--;
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                if (PlayController.Playing)
+                    App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
             }
         }
 
         public void Pause()
         {
-            App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Pause());
-            Prop.Playing = false;
+            App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Pause());
+            PlayController.Playing = false;
         }
 
         public void Stop()
         {
-            App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Stop());
-            Prop.Playing = false;
+            App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Stop());
+            PlayController.Playing = false;
         }
 
         public void Play()
         {
-            if (App.Current.Dispatcher.Invoke<Uri>(() => Prop.MediaPlayer.Source) != null)
+            if (App.Current.Dispatcher.Invoke<Uri>(() => PlayController.MediaPlayer.Source) != null)
             {
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                Prop.Playing = true;
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                PlayController.Playing = true;
             }
             else
-                Prop.Playing = false;        
+                PlayController.Playing = false;        
         }
 
         public void Play(int index)
         {
-            if (Prop.Playlist.Count > index)
+            if (PlayController.Playlist.Count > index)
             {
-                Prop.Track = index;
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = false);
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
-                App.Current.Dispatcher.Invoke(() => Prop.View.g_controls.IsEnabled = true);
-                Prop.Playing = true;
+                PlayController.Track = index;
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = false);
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
+                App.Current.Dispatcher.Invoke(() => PlayController.View.g_controls.IsEnabled = true);
+                PlayController.Playing = true;
             }
         }
 
         public void SetPosition(TimeSpan position)
         {
-            App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Position = position);
-            if (Prop.Playing == false)
-                App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Pause());
-            Prop.Position = position;
+            App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Position = position);
+            if (PlayController.Playing == false)
+                App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Pause());
+            PlayController.Position = position;
         }
 
         public void SetPan(double pan)
         {
-            Prop.View.Dispatcher.Invoke(() => Prop.View.s_balance.Value = pan);
-            App.Current.Dispatcher.Invoke(() => Prop.MediaPlayer.Balance = pan);
+            PlayController.View.Dispatcher.Invoke(() => PlayController.View.s_balance.Value = pan);
+            App.Current.Dispatcher.Invoke(() => PlayController.MediaPlayer.Balance = pan);
         }
 
         public void SearchTracks(string searchtext)
@@ -664,7 +691,7 @@ namespace Player.ViewModels
             if (!File.Exists(playlistpath))
                 throw new FileLoadException("Die Datei ist nicht vorhanden!");
 
-            Prop.View.Status = "Tracks werden geladen...";
+            PlayController.View.Status = "Tracks werden geladen...";
 
             XDocument xd = XDocument.Load(playlistpath);
             List<string> adds = new List<string>();
@@ -673,7 +700,7 @@ namespace Player.ViewModels
                 adds.Add(xe.Attribute("src").Value);
             }
             
-            Prop.View.Dispatcher.Invoke(()=> Prop.Playlist.Clear());            
+            PlayController.View.Dispatcher.Invoke(()=> PlayController.Playlist.Clear());            
             List<string> fails = new List<string>();
             DateTime start = DateTime.Now;
 
@@ -685,9 +712,9 @@ namespace Player.ViewModels
                     Track t = new Track();
                     t.Path = p;
                     t.Title = Path.GetFileNameWithoutExtension(p);
-                    if (Prop.View == null || Prop.View.Dispatcher == null || Prop.View.Dispatcher.HasShutdownStarted)
+                    if (PlayController.View == null || PlayController.View.Dispatcher == null || PlayController.View.Dispatcher.HasShutdownStarted)
                         return;
-                    Prop.View.Dispatcher.Invoke(() => Prop.Playlist.Add(t));
+                    PlayController.View.Dispatcher.Invoke(() => PlayController.Playlist.Add(t));
                 }
                 catch (Exception ex)
                 {
@@ -697,48 +724,48 @@ namespace Player.ViewModels
             }
             Log.Write(string.Format("{0} Tracks erfolgreich geladen. {1} Fehler. ({2}ms)", adds.Count - fails.Count, fails.Count, (DateTime.Now - start).TotalMilliseconds), EventType.Success);
 
-            if (Prop.View == null || Prop.View.Dispatcher == null || Prop.View.Dispatcher.HasShutdownStarted)
+            if (PlayController.View == null || PlayController.View.Dispatcher == null || PlayController.View.Dispatcher.HasShutdownStarted)
                 return;
-            Prop.View.Playlist = Path.GetFileNameWithoutExtension(playlistpath);
-            Prop.Playlistpath = playlistpath;
-            Prop.View.Tracks = Prop.Playlist.Count;
+            PlayController.View.Playlist = Path.GetFileNameWithoutExtension(playlistpath);
+            PlayController.Playlistpath = playlistpath;
+            PlayController.View.Tracks = PlayController.Playlist.Count;
             if (fails.Count < 5)
                 foreach (string s in fails)
                     App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("Der Track {0} konnte nicht geladen werden.", s)));
             else
                 App.Current.Dispatcher.Invoke(() => Info.Show(string.Format("{0} Tracks konnten nicht geladen werden.", fails.Count)));
-            Prop.View.Status = null;
+            PlayController.View.Status = null;
             LoadTags();
         }
 
         private void LoadTags()
         {
-            Prop.View.Status = "ID3-Tags werden geladen...";
+            PlayController.View.Status = "ID3-Tags werden geladen...";
             DateTime start = DateTime.Now;
             new Thread(() =>
             {
-                lock (Prop.Playlist)
+                lock (PlayController.Playlist)
                 {
                     long Counter = 0;
                     List<Track> errors = new List<Track>();
-                    for (int i = 0; i < Prop.Playlist.Count; i++)
+                    for (int i = 0; i < PlayController.Playlist.Count; i++)
                     {
-                        Track t = Prop.Playlist[i];
+                        Track t = PlayController.Playlist[i];
                         if (!t.HasTags)
                         {
                             try
                             {
                                 Track n = Track.ParseFromFile(t.Path);
-                                if (Prop.View == null || Prop.View.Dispatcher == null || Prop.View.Dispatcher.HasShutdownStarted)
+                                if (PlayController.View == null || PlayController.View.Dispatcher == null || PlayController.View.Dispatcher.HasShutdownStarted)
                                     return;
-                                Prop.View.Dispatcher.Invoke(() => Prop.Playlist[i] = n);
+                                PlayController.View.Dispatcher.Invoke(() => PlayController.Playlist[i] = n);
 
-                                if (i == Prop.Track)
+                                if (i == PlayController.Track)
                                 {
-                                    Prop.View.Titel = n.Title;
-                                    Prop.View.Interpret = n.Performer;
-                                    Prop.View.Album = n.Album;
-                                    Prop.View.Cover = n.AlbumArt;
+                                    PlayController.View.Titel = n.Title;
+                                    PlayController.View.Interpret = n.Performer;
+                                    PlayController.View.Album = n.Album;
+                                    PlayController.View.Cover = n.AlbumArt;
                                 }
                                 Counter++;
                             }
@@ -752,12 +779,12 @@ namespace Player.ViewModels
                     Log.Write(string.Format("{0} Tag(s) erfolgreich geladen! ({0}ms)", Counter, (DateTime.Now-start).TotalMilliseconds), EventType.Info);
                     foreach (Track t in errors)
                     {
-                        if (Prop.View == null || Prop.View.Dispatcher == null || Prop.View.Dispatcher.HasShutdownStarted)
+                        if (PlayController.View == null || PlayController.View.Dispatcher == null || PlayController.View.Dispatcher.HasShutdownStarted)
                             return;
-                        Prop.View.Dispatcher.Invoke(() => Prop.Playlist.Remove(t));
+                        PlayController.View.Dispatcher.Invoke(() => PlayController.Playlist.Remove(t));
                     }
                 }
-                Prop.View.Status = null;                
+                PlayController.View.Status = null;                
             }).Start();
         }
 
@@ -765,17 +792,17 @@ namespace Player.ViewModels
         {
             if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten")))
                 return;
-            Prop.View.Status = "Playlists werden geladen...";
+            PlayController.View.Status = "Playlists werden geladen...";
             IEnumerable<string> plsts = Directory.EnumerateFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
             foreach (string path in plsts)
             {
                 if (Path.GetExtension(path) == ".plst" || Path.GetExtension(path) == ".zpl" || Path.GetExtension(path) == ".wpl")
                 {
                     Playlist plst = Playlist.Create(path);
-                    Prop.View.Dispatcher.Invoke(() => Prop.View.Playlistview.Add(plst), DispatcherPriority.Background);
+                    PlayController.View.Dispatcher.Invoke(() => PlayController.View.Playlistview.Add(plst), DispatcherPriority.Background);
                 }
             }
-            Prop.View.Status = null;
+            PlayController.View.Status = null;
         }
 
         public void NeuePlaylist()
@@ -791,34 +818,34 @@ namespace Player.ViewModels
                 return;
             }
             Playlist plst;
-            if (Prop.Playlist.Count > 0 &&  Dialog.GetResult("Möchten Sie die aktuelle Wiedergabe in die neue Playlist übernehmen?"))
-                plst = Playlist.SaveToPlaylist(Prop.Playlist, Path.Combine(Prop.PlaylistFolder, s + ".plst"));
+            if (PlayController.Playlist.Count > 0 &&  Dialog.GetResult("Möchten Sie die aktuelle Wiedergabe in die neue Playlist übernehmen?"))
+                plst = Playlist.SaveToPlaylist(PlayController.Playlist, Path.Combine(PlayController.PlaylistFolder, s + ".plst"));
             else
-                plst = Playlist.SaveToPlaylist(new List<Track>(), Path.Combine(Prop.PlaylistFolder, s + ".plst"));
-            Prop.View.Playlistview.Add(plst);
+                plst = Playlist.SaveToPlaylist(new List<Track>(), Path.Combine(PlayController.PlaylistFolder, s + ".plst"));
+            PlayController.View.Playlistview.Add(plst);
         }
 
         public void Clear()
         {
-            if (!string.IsNullOrEmpty(Prop.Playlistpath))
+            if (!string.IsNullOrEmpty(PlayController.Playlistpath))
             {
-                Playlist.SaveToPlaylist(Prop.Playlist, Prop.Playlistpath);
+                Playlist.SaveToPlaylist(PlayController.Playlist, PlayController.Playlistpath);
             }
-            Prop.Track = 0;            
-            Prop.Playing = false;
-            Prop.Playlistpath = null;
+            PlayController.Track = 0;            
+            PlayController.Playing = false;
+            PlayController.Playlistpath = null;
             App.Current.Dispatcher.Invoke(() =>
                 {
-                    Prop.Playlist.Clear();
-                    Prop.MediaPlayer.Close();
-                    Prop.View.Titel = "Kein Titel";
-                    Prop.View.Album = null;
-                    Prop.View.Interpret = null;
-                    Prop.View.i_cover.Source = null;
-                    Prop.View.i_minicover.Source = null;
-                    Prop.View.Playlist = null;
-                    Prop.View.Tracks = 0;
-                    Prop.View.Länge = new TimeSpan();
+                    PlayController.Playlist.Clear();
+                    PlayController.MediaPlayer.Close();
+                    PlayController.View.Titel = "Kein Titel";
+                    PlayController.View.Album = null;
+                    PlayController.View.Interpret = null;
+                    //PlayController.View.i_cover.Source = null;
+                    //PlayController.View.i_minicover.Source = null;
+                    PlayController.View.Playlist = null;
+                    PlayController.View.Tracks = 0;
+                    PlayController.View.Länge = new TimeSpan();
                 });
         }
 
@@ -830,9 +857,9 @@ namespace Player.ViewModels
                 {
                     if (File.Exists(p.Path))
                         File.Delete(p.Path);
-                    Prop.View.Playlistview.Remove(p);
-                    if (Prop.Playlistpath == p.Path)
-                        Prop.Playlistpath = null;
+                    PlayController.View.Playlistview.Remove(p);
+                    if (PlayController.Playlistpath == p.Path)
+                        PlayController.Playlistpath = null;
                 }
                 catch (Exception ex)
                 {
@@ -855,11 +882,11 @@ namespace Player.ViewModels
                 xd.Save(path);
                 if (File.Exists(p.Path))
                     File.Delete(p.Path);
-                Prop.View.Playlistview.Remove(p);
-                Prop.View.Playlistview.Add(p);
+                PlayController.View.Playlistview.Remove(p);
+                PlayController.View.Playlistview.Add(p);
 
-                if (Prop.Playlistpath == p.Path)
-                    Prop.Playlistpath = path;
+                if (PlayController.Playlistpath == p.Path)
+                    PlayController.Playlistpath = path;
             }
             catch (Exception ex)
             {
@@ -875,7 +902,7 @@ namespace Player.ViewModels
             {
                 XDocument xd = XDocument.Load(p.Path);
                 XElement seq = xd.Root.Element("body").Element("seq");
-                foreach (Track t in Prop.Playlist)
+                foreach (Track t in PlayController.Playlist)
                 {
                     seq.Add(
                         new XElement("media",
@@ -884,9 +911,9 @@ namespace Player.ViewModels
                         );
                 }
                 xd.Save(p.Path);
-                p.Length = p.Length + Prop.Playlist.Count;
-                Prop.View.Playlistview.Remove(p);
-                Prop.View.Playlistview.Add(p);
+                p.Length = p.Length + PlayController.Playlist.Count;
+                PlayController.View.Playlistview.Remove(p);
+                PlayController.View.Playlistview.Add(p);
             }
             catch (Exception ex)
             {
@@ -921,11 +948,11 @@ namespace Player.ViewModels
         public void TrackInPlaylist(Playlist p)
         {
             //Aktuellen Track einer Playlist hinzufügen
-            if (Prop.Playlist.Count > Prop.Track)
+            if (PlayController.Playlist.Count > PlayController.Track)
             {
                 try
                 {
-                    Track t = Prop.Playlist[Prop.Track];
+                    Track t = PlayController.Playlist[PlayController.Track];
                     XDocument xd = XDocument.Load(p.Path);
                     XElement seq = xd.Root.Element("body").Element("seq");
                     seq.Add(
@@ -935,8 +962,8 @@ namespace Player.ViewModels
                             );
                     xd.Save(p.Path);
                     p.Length++;
-                    Prop.View.Playlistview.Remove(p);
-                    Prop.View.Playlistview.Add(p);
+                    PlayController.View.Playlistview.Remove(p);
+                    PlayController.View.Playlistview.Add(p);
                 }
                 catch (Exception ex)
                 {
@@ -1013,7 +1040,7 @@ namespace Player.ViewModels
             {
                 try
                 {
-                    Prop.BackgroundImage = (sender as Microsoft.Win32.OpenFileDialog).FileName;
+                    PlayController.BackgroundImage = (sender as Microsoft.Win32.OpenFileDialog).FileName;
                 }
                 catch (Exception ex)
                 {
@@ -1025,19 +1052,19 @@ namespace Player.ViewModels
 
         public void NachOben(Track t)
         {
-            if (t != null && Prop.Playlist.Contains(t))
+            if (t != null && PlayController.Playlist.Contains(t))
             {
-                int index = Prop.Playlist.IndexOf(t);
+                int index = PlayController.Playlist.IndexOf(t);
                 if (index > 0)
                 {
-                    Prop.Playlist.Move(index, index-1);
-                    if (Prop.Track == index)
+                    PlayController.Playlist.Move(index, index-1);
+                    if (PlayController.Track == index)
                     {
-                        Prop.Track--;
+                        PlayController.Track--;
                     }
-                    else if (Prop.Track == index-1)
+                    else if (PlayController.Track == index-1)
                     {
-                        Prop.Track = index;
+                        PlayController.Track = index;
                     }
                 }
             }
@@ -1045,19 +1072,19 @@ namespace Player.ViewModels
 
         public void NachUnten(Track t)
         {
-            if (t != null && Prop.Playlist.Contains(t))
+            if (t != null && PlayController.Playlist.Contains(t))
             {
-                int index = Prop.Playlist.IndexOf(t);
-                if (index < Prop.Playlist.Count)
+                int index = PlayController.Playlist.IndexOf(t);
+                if (index < PlayController.Playlist.Count)
                 {
-                    Prop.Playlist.Move(index, index + 1);
-                    if (Prop.Track == index)
+                    PlayController.Playlist.Move(index, index + 1);
+                    if (PlayController.Track == index)
                     {
-                        Prop.Track++;
+                        PlayController.Track++;
                     }
-                    else if (Prop.Track == index + 1)
+                    else if (PlayController.Track == index + 1)
                     {
-                        Prop.Track = index;
+                        PlayController.Track = index;
                     }
                 }
             }
@@ -1065,7 +1092,7 @@ namespace Player.ViewModels
 
         public void VonVorn()
         {
-            if (Prop.Playlist.Count > 0)
+            if (PlayController.Playlist.Count > 0)
             {
                 Play(0);
             }

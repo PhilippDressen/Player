@@ -25,7 +25,7 @@ namespace Player
             }
         }
 
-        static string logfile = Path.Combine(Prop.AppFolder, "Player.log");
+        static string logfile = Path.Combine(PlayController.AppFolder, "Player.log");
 
         static StreamWriter _logwriter;
         public static StreamWriter LogWriter

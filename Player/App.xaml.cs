@@ -8,9 +8,10 @@ using System.Windows;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Security.Principal;
-using Player.Controllers;
+using Player.Views;
 
-namespace Player
+
+namespace Player.Views
 {
     /// <summary>
     /// Interaktionslogik für "App.xaml"
@@ -26,26 +27,9 @@ namespace Player
                 e.Cancel = true;
                 this.Shutdown();
             }
-            
+
             base.OnNavigating(e);
         }
-
-        private void StackPanel_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(Track)) && (e.Data.GetData(typeof(Track))) != (((e.Source as FrameworkElement).DataContext) as Player.Track))
-            {
-                Console.WriteLine( (e.Data.GetData(typeof(Track))).ToString() + " nach:" );
-                Console.WriteLine((((e.Source as FrameworkElement).DataContext) as Track).ToString());
-                try
-                {
-                    int from = Prop.Playlist.IndexOf((e.Data.GetData(typeof(Track))) as Track);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            }
-        }
-
+        
     }
 }

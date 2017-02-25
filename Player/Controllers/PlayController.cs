@@ -25,7 +25,7 @@ namespace Player.Controllers
     /// <summary>
     /// statische Ressourcen
     /// </summary>
-    class Prop
+    class PlayController
     {
         public static string CurrentVersion
         {
@@ -109,7 +109,7 @@ namespace Player.Controllers
                         if (View.lb_tracks.Items.Count > value)
                         {
                             View.lb_tracks.SelectedIndex = value;
-                            View.lb_tracks.ScrollIntoView(Prop.Playlist[value]);
+                            View.lb_tracks.ScrollIntoView(PlayController.Playlist[value]);
                         }
                     });
                 }
@@ -387,7 +387,7 @@ namespace Player.Controllers
         {
             if (File.Exists(savepath))
             {
-                Prop.View.Status = "Einstellungen werden geladen...";
+                PlayController.View.Status = "Einstellungen werden geladen...";
                 DateTime start = DateTime.Now;
                 XDocument xd = XDocument.Load(savepath);
                 Playing = Convert.ToBoolean(xd.Root.Element("Playing").Attribute("value").Value);
@@ -428,14 +428,14 @@ namespace Player.Controllers
                 Log.Write(string.Format("Einstellungen geladen. ({0}ms)", (DateTime.Now - start).TotalMilliseconds), EventType.Success);
                 //if (xd.Root.Attribute("Version") == null || xd.Root.Attribute("Version").Value != CurrentVersion)
                 //    View.Dispatcher.Invoke(ShowChangeLog);
-                Prop.View.Status = null;
+                PlayController.View.Status = null;
             }
             else
             {
                 Log.Write("Kein Einstellungen gefunden.", EventType.Info);
             }
 
-            Prop.View.Status = null;
+            PlayController.View.Status = null;
         }
 
         private static void ShowChangeLog()

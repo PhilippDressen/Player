@@ -36,7 +36,7 @@ namespace Player.Views
         public static void Show(Track t)
         {
             TagEditView tev = new TagEditView();
-            tev.Owner = Prop.View;
+            tev.Owner = PlayController.View;
             tev.Show();
             new Thread(() => tev.Rescan(t)).Start();
         }
@@ -239,13 +239,13 @@ namespace Player.Views
                 TagFile.Save();
                 Dispatcher.Invoke(() =>
                     {
-                        if (TagTrack != null && Prop.View != null && Prop.Playlist.Contains(TagTrack))
+                        if (TagTrack != null && PlayController.View != null && PlayController.Playlist.Contains(TagTrack))
                         {
-                            int ind = Prop.Playlist.IndexOf(TagTrack);
-                            Prop.Playlist.Remove(TagTrack);
+                            int ind = PlayController.Playlist.IndexOf(TagTrack);
+                            PlayController.Playlist.Remove(TagTrack);
                             Track t = Track.ParseFromTaglib(TagFile.Tag);
                             t.Path = TagFile.Name;
-                            Prop.Playlist.Insert(ind, t);
+                            PlayController.Playlist.Insert(ind, t);
                         }
                     });
             }

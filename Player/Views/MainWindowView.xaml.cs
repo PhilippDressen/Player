@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using Player.ViewModels;
 using Player.Controllers;
+using System.ComponentModel;
 
 namespace Player.Views
 {
@@ -27,10 +28,10 @@ namespace Player.Views
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindowView : Window
+    public partial class MainWindowView : Window, INotifyPropertyChanged
     {
-        Codebehind _logic;
-        public Codebehind Logic
+        MainViewModel _logic;
+        public MainViewModel Logic
         { get { return _logic; } set { _logic = value; } }
 
         ObservableCollection<Playlist> _playlistview = new ObservableCollection<Playlist>();
@@ -42,6 +43,8 @@ namespace Player.Views
         Storyboard Ausklappen;
         State playerstate = State.Expanded;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public MainWindowView()
         {
             InitializeComponent();
@@ -51,10 +54,10 @@ namespace Player.Views
 
         private void w_player_Initialized(object sender, EventArgs e)
         {
-            lb_tracks.ItemsSource = Prop.Playlist;
+            lb_tracks.ItemsSource = PlayController.Playlist;
             lb_playlists.ItemsSource = Playlistview;
-            Prop.View = this;
-            Logic = new Codebehind();
+            PlayController.View = this;
+            Logic = new MainViewModel();
             Logic.Bootup();
         }
 
@@ -82,14 +85,14 @@ namespace Player.Views
 
         void start_Completed(object sender, EventArgs e)
         {
-            if (!w_player.IsMouseOver && !Prop.DisableAnimations)
+            if (!w_player.IsMouseOver && !PlayController.DisableAnimations)
                 GetEinklappen().Begin();
         }
 
         private void Minitimer_Tick(object sender, EventArgs e)
         {
             ((DispatcherTimer)sender).Stop();
-            if (Prop.DisableAnimations)
+            if (PlayController.DisableAnimations)
                 return;
             GetEinklappen().Begin();
         }
@@ -158,7 +161,7 @@ namespace Player.Views
 
         void Ausklappen_Completed(object sender, EventArgs e)
         {
-            Prop.Track = Prop.Track;
+            PlayController.Track = PlayController.Track;
             playerstate = State.Expanded;
         }
 
@@ -286,8 +289,8 @@ namespace Player.Views
             {
                 Dispatcher.Invoke(() =>
                 {
-                   r_tracks.Text = Prop.Playlist.Count.ToString();
-                   r_tracks1.Text = Prop.Playlist.Count.ToString();
+                   r_tracks.Text = PlayController.Playlist.Count.ToString();
+                   r_tracks1.Text = PlayController.Playlist.Count.ToString();
                 });
             }
         }
@@ -365,7 +368,7 @@ namespace Player.Views
 
         private void b_play_Click(object sender, RoutedEventArgs e)
         {
-            if (Prop.Playing)
+            if (PlayController.Playing)
                 Logic.Pause();
             else
                 Logic.Play();
@@ -373,27 +376,27 @@ namespace Player.Views
 
         private void s_speed_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Prop.Speed = 1;
+            PlayController.Speed = 1;
         }
 
         private void cb_Wiederholen_Click(object sender, RoutedEventArgs e)
         {
-            Prop.Repeat = (sender as CheckBox).IsChecked.Value;
+            PlayController.Repeat = (sender as CheckBox).IsChecked.Value;
         }
 
         private void cb_zufall_Click(object sender, RoutedEventArgs e)
         {
-            Prop.Random = (sender as CheckBox).IsChecked.Value;
+            PlayController.Random = (sender as CheckBox).IsChecked.Value;
         }
 
         private void cb_mute_Click(object sender, RoutedEventArgs e)
         {
-            Prop.Muting = (sender as CheckBox).IsChecked.Value;
+            PlayController.Muting = (sender as CheckBox).IsChecked.Value;
         }
 
         private void cb_positonmerken_Click(object sender, RoutedEventArgs e)
         {
-            Prop.RememberPosition = (sender as CheckBox).IsChecked.Value;
+            PlayController.RememberPosition = (sender as CheckBox).IsChecked.Value;
         }
 
         private void b_schließen_Click(object sender, RoutedEventArgs e)
@@ -423,7 +426,7 @@ namespace Player.Views
 
         private void s_lautstärke_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Prop.Volume = 0.8;
+            PlayController.Volume = 0.8;
         }
 
         private void lb_tracks_MouseLeave(object sender, MouseEventArgs e)
@@ -475,9 +478,9 @@ namespace Player.Views
             mi_entfernen.IsEnabled = b;
             mi_oben.IsEnabled =b;
             mi_unten.IsEnabled = b;
-            mi_tags.IsEnabled = b && Prop.Track != lb_tracks.SelectedIndex;
+            mi_tags.IsEnabled = b && PlayController.Track != lb_tracks.SelectedIndex;
 
-            mi_vonvorn.IsEnabled = Prop.Playlist.Count > 0;
+            mi_vonvorn.IsEnabled = PlayController.Playlist.Count > 0;
         }
 
         private void lb_tracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -492,12 +495,12 @@ namespace Player.Views
         private void s_speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if ((s_speed.IsMouseOver && Mouse.LeftButton.Equals(MouseButtonState.Pressed)))
-                Prop.Speed = s_speed.Value;
+                PlayController.Speed = s_speed.Value;
         }
 
         private void s_lautstärke_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Prop.Volume = s_lautstärke.Value / 100;
+            PlayController.Volume = s_lautstärke.Value / 100;
         }
 
         private void mi_vonvorn_Click(object sender, RoutedEventArgs e)
@@ -650,7 +653,7 @@ namespace Player.Views
             DoubleAnimation da = new DoubleAnimation(60, TimeSpan.FromSeconds(0.2));
             da.Completed += (o, i) =>
             {
-                Prop.Track = Prop.Track;
+                PlayController.Track = PlayController.Track;
             };
             sv_tracks.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
             sv_tracks.BeginAnimation(StackPanel.HeightProperty, da);
@@ -670,29 +673,29 @@ namespace Player.Views
         {
             if (lb_playlists.SelectedItem != null)
             {
-                Prop.View.Busy = true;
+                PlayController.View.Busy = true;
                 lb_playlists.IsEnabled = false;
                 Playlist p = lb_playlists.SelectedItem as Playlist;
                 new Thread(() =>
                     {
-                        if (!string.IsNullOrEmpty(Prop.Playlistpath))
+                        if (!string.IsNullOrEmpty(PlayController.Playlistpath))
                         {
-                            Player.Playlist.SaveToPlaylist(Prop.Playlist, Prop.Playlistpath);
+                            Player.Playlist.SaveToPlaylist(PlayController.Playlist, PlayController.Playlistpath);
                         }
                         Logic.LoadPlaylist(p.Path);
-                        Prop.Track = 0;
-                        if (Prop.Playlist.Count > 0)
+                        PlayController.Track = 0;
+                        if (PlayController.Playlist.Count > 0)
                         {
                             Dispatcher.Invoke(() => g_controls.IsEnabled = false);
-                            Dispatcher.Invoke(() => Prop.MediaPlayer.Open(new Uri(Prop.Playlist[Prop.Track].Path)));
-                            Dispatcher.Invoke(() => Prop.MediaPlayer.Volume = Prop.Volume);
-                            Dispatcher.Invoke(() => Prop.MediaPlayer.Play());
+                            Dispatcher.Invoke(() => PlayController.MediaPlayer.Open(new Uri(PlayController.Playlist[PlayController.Track].Path)));
+                            Dispatcher.Invoke(() => PlayController.MediaPlayer.Volume = PlayController.Volume);
+                            Dispatcher.Invoke(() => PlayController.MediaPlayer.Play());
                             Dispatcher.Invoke(() => g_controls.IsEnabled = true);
-                            Prop.Playing = true;
+                            PlayController.Playing = true;
                         }
                         else
-                            Prop.Playing = false;
-                       Prop.View.Busy = false;
+                            PlayController.Playing = false;
+                       PlayController.View.Busy = false;
                     }).Start();
                 SlideToTracks();
                 lb_playlists.IsEnabled = true;
@@ -730,12 +733,12 @@ namespace Player.Views
 
         private void mi_backgroundentfernen_Click(object sender, RoutedEventArgs e)
         {
-            Prop.BackgroundImage = null;
+            PlayController.BackgroundImage = null;
         }
 
         private void w_player_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            if (Prop.BackgroundImage != null)
+            if (PlayController.BackgroundImage != null)
             {
                 mi_background.Visibility = System.Windows.Visibility.Collapsed;
                 mi_backgroundentfernen.Visibility = System.Windows.Visibility.Visible;
@@ -749,8 +752,8 @@ namespace Player.Views
 
         private void cb_animationen_Click(object sender, RoutedEventArgs e)
         {
-            Prop.DisableAnimations = cb_animationen.IsChecked.Value;
-            if (Prop.DisableAnimations)
+            PlayController.DisableAnimations = cb_animationen.IsChecked.Value;
+            if (PlayController.DisableAnimations)
             {
                 if (Einklappen != null)
                     Einklappen.Stop();
@@ -766,7 +769,7 @@ namespace Player.Views
 
         private void w_player_LocationChanged(object sender, EventArgs e)
         {
-            Prop.WindowPosition = new Point(Left, Top);
+            PlayController.WindowPosition = new Point(Left, Top);
         }
 
         private void mi_tags_Click(object sender, RoutedEventArgs e)
