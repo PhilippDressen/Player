@@ -510,7 +510,7 @@
             <MenuItem x:Name="mi_backgroundentfernen" Click="mi_backgroundentfernen_Click" Header="Hintergrundbild entfernen" />
         </ContextMenu>
     </Window.ContextMenu>
-    <Grid>        
+    <Grid>
         <Border x:Name="b_hintergrund" BorderBrush="White" BorderThickness="1" Margin="0" CornerRadius="5" Background="#CC000000">
             <Border.RenderTransform>
                 <TransformGroup>
@@ -633,7 +633,7 @@
                                     </TransformGroup>
                                 </Slider.RenderTransform>
                             </Slider>
-                            <Button x:Name="b_zurück" Content="◄◄" Margin="184,33,283,0" Click="b_zurück_Click" VerticalAlignment="Top" Foreground="White" FontSize="22" HorizontalContentAlignment="Center" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}">
+                            <Button x:Name="b_zurück" Content="◄◄" Margin="0,0,100,0" Click="b_zurück_Click" VerticalAlignment="Center" Foreground="White" FontSize="20" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderBrush="Black" BorderThickness="2" Background="#E5000000" HorizontalAlignment="Center">
                                 <Button.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
