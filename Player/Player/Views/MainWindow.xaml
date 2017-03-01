@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Player"
-        xmlns:vm="clr-namespace:Player.ViewModels"
+        xmlns:ViewModels="clr-namespace:Player.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding Title}" IsEnabled="{Binding IsEnabled}" Height="350" Width="525">
     <Window.DataContext>
-        <vm:MainWindowViewModel/>
+        <ViewModels:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
         
