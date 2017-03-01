@@ -72,6 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\PlayController.cs" />
+    <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
