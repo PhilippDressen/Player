@@ -86,13 +86,13 @@
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <Border x:Name="border" CornerRadius="5" Padding="0, 2, 3, 0">
                             <StackPanel Orientation="Horizontal">
-                                <Image x:Name="checkboxImage" Source="Icons/repeat.png" />
+                                <Image x:Name="checkboxImage" Source="/Icons/repeat.png" />
                                 <ContentPresenter/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="checkboxImage" Property="Source" Value="Icons/norepeat.png"/>
+                                <Setter TargetName="checkboxImage" Property="Source" Value="/Icons/norepeat.png"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#7F0000FF"/>
@@ -119,13 +119,13 @@
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <Border x:Name="border" CornerRadius="5" Padding="0, 2, 3, 0">
                             <StackPanel Orientation="Horizontal">
-                                <Image x:Name="checkboxImage" Source="Icons/random.png"/>
+                                <Image x:Name="checkboxImage" Source="/Icons/random.png"/>
                                 <ContentPresenter/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="checkboxImage" Property="Source" Value="Icons/norandom.png"/>
+                                <Setter TargetName="checkboxImage" Property="Source" Value="/Icons/norandom.png"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#7F0000FF"/>
@@ -152,13 +152,13 @@
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <Border x:Name="border" CornerRadius="5" Padding="0, 2, 3, 0">
                             <StackPanel Orientation="Horizontal">
-                                <Image x:Name="checkboxImage" Source="Icons/nomute.png"/>
+                                <Image x:Name="checkboxImage" Source="/Icons/nomute.png"/>
                                 <ContentPresenter/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="checkboxImage" Property="Source" Value="Icons/mute.png"/>
+                                <Setter TargetName="checkboxImage" Property="Source" Value="/Icons/mute.png"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#7F0000FF"/>
