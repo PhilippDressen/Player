@@ -10,6 +10,13 @@ namespace Player.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName]string name = null)
+        {
+            App.Current.Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
+        }
+
         private string title = "Player";
         public string Title
         {
@@ -41,13 +48,6 @@ namespace Player.ViewModels
         public MainWindowViewModel()
         {
 
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName]string name = null)
-        {
-            App.Current.Dispatcher.Invoke( ()=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)) );
-        }
+        }        
     }
 }
