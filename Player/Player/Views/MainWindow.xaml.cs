@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Player
+namespace Player.Views
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
