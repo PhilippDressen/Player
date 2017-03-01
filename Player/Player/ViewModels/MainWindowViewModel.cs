@@ -17,7 +17,7 @@ namespace Player.ViewModels
             App.Current.Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
         }
 
-        private string title = "Player";
+        private string title = "Title";
         public string Title
         {
             get
