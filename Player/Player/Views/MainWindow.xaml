@@ -634,7 +634,19 @@
                                 </TransformGroup>
                             </Slider.RenderTransform>
                         </Slider>
-                        <Button x:Name="b_zurück" Content="◄◄" Margin="0,30,120,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderBrush="Black" BorderThickness="2" Background="#E5000000" HorizontalAlignment="Center" FontSize="16" UseLayoutRounding="False" MinWidth="20" MinHeight="20">
+                        <Button x:Name="b_zurück" Content="◄◄" Margin="0,30,120,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderThickness="1" HorizontalAlignment="Center" FontSize="16" UseLayoutRounding="False" MinWidth="20" MinHeight="20">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#E5000000" Offset="0"/>
+                                    <GradientStop Color="#E52B2B2B" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="1"/>
+                                    <GradientStop Color="#FF5F5F5F"/>
+                                </LinearGradientBrush>
+                            </Button.BorderBrush>
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -644,7 +656,19 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_vor" Content="►►" Margin="120,30,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="2" UseLayoutRounding="False" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
+                        <Button x:Name="b_vor" Content="►►" Margin="120,30,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#E5000000" Offset="0"/>
+                                    <GradientStop Color="#E52B2B2B" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="1"/>
+                                    <GradientStop Color="#FF5F5F5F"/>
+                                </LinearGradientBrush>
+                            </Button.BorderBrush>
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -654,7 +678,19 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_laden" Content="Laden..." Margin="169.5,75,268.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="2" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
+                        <Button x:Name="b_laden" Content="Laden..." Margin="169.5,75,268.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#E5000000" Offset="0"/>
+                                    <GradientStop Color="#E52B2B2B" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="1"/>
+                                    <GradientStop Color="#FF5F5F5F"/>
+                                </LinearGradientBrush>
+                            </Button.BorderBrush>
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -664,7 +700,19 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_leeren" Content="Leeren" Margin="263.129,75,169.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="2" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
+                        <Button x:Name="b_leeren" Content="Leeren" Margin="263.129,75,169.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#E5000000" Offset="0"/>
+                                    <GradientStop Color="#E52B2B2B" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="1"/>
+                                    <GradientStop Color="#FF5F5F5F"/>
+                                </LinearGradientBrush>
+                            </Button.BorderBrush>
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -674,7 +722,19 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_play" Content=" ► " VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="2" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
+                        <Button x:Name="b_play" Content=" ► " VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#E5000000" Offset="0"/>
+                                    <GradientStop Color="#E52B2B2B" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="1"/>
+                                    <GradientStop Color="#FF5F5F5F"/>
+                                </LinearGradientBrush>
+                            </Button.BorderBrush>
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -776,7 +836,13 @@
                         </TransformGroup>
                     </Slider.RenderTransform>
                 </Slider>
-                <Label x:Name="l_status" Content="Einstellungen laden..." HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FF3AFF00" Margin="0,0,47,63" Effect="{DynamicResource DropShadow}">
+                <Label x:Name="l_status" Content="{Binding Status}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{x:Null}" Margin="0,0,47,63" Effect="{DynamicResource DropShadow}">
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FF959EFF"/>
+                            <GradientStop Color="#FF0017FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
                     <Label.Triggers>
                         <EventTrigger RoutedEvent="FrameworkElement.Loaded" SourceName="l_status">
                             <BeginStoryboard x:Name="sb">
@@ -860,7 +926,7 @@
                     </ScrollViewer>
                 </Border>
             </Grid>
-            <ProgressBar x:Name="pb" Foreground="#66FFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" IsIndeterminate="True" VerticalAlignment="Bottom" Height="15"/>
+            <ProgressBar x:Name="pb_progress" Foreground="#66FFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" VerticalAlignment="Bottom" Height="15"/>
         </Grid>
     </Border>
 </Window>

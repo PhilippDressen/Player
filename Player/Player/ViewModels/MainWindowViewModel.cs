@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -13,6 +14,7 @@ namespace Player.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
+        #region Properties
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName]string name = null)
@@ -90,28 +92,75 @@ namespace Player.ViewModels
             }
         }
 
+        private string status;
+        public string Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                status = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private TimeSpan duration;
+        public TimeSpan Duration
+        {
+            get
+            {
+                return duration;
+            }
+            set
+            {
+                duration = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private TimeSpan position;
+        public TimeSpan Position
+        {
+            get
+            {
+                return position;
+            }
+            set
+            {
+                position = value;
+                NotifyPropertyChanged();
+            }
+        }
+        #endregion
+
         public MainWindowViewModel()
         {
-            LoadSettings();
+            LoadSettings().Wait();
         }   
 
         public void Close()
         {
-            SaveSettings();
+            Task.Run(SaveSettings);
         }
         
-        private void LoadSettings()
+        private async Task LoadSettings()
         {
+            Status = "Einstellungen laden...";
             Settings set = Settings.Default;
             Left = set.WindowPosition.X;
             Top = set.WindowPosition.Y;
+            Status = null;
         }
 
-        private void SaveSettings()
+        private async Task SaveSettings()
         {
+            Status = "Einstellungen speichern...";
             Settings set = Settings.Default;
             set.WindowPosition = new Point(Left, Top);
             set.Save();
+            Status = null;
         }
     }
 }
