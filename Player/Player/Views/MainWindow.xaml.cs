@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Player.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -21,6 +22,14 @@ namespace Player.Views
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private MainWindowViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as MainWindowViewModel;
+            }
+        } 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +45,11 @@ namespace Player.Views
         private void w_mainwindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+
+        private void w_mainwindow_Closing(object sender, CancelEventArgs e)
+        {
+            ViewModel.Close();
         }
     }
 }

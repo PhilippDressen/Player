@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:Player"
         xmlns:ViewModels="clr-namespace:Player.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Title}" IsEnabled="{Binding IsEnabled}" Topmost="True" HorizontalContentAlignment="Center"
-        ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" Top="10" ShowInTaskbar="False" Foreground="White" Focusable="False"
-        Icon="../Icons/iconmini.ico" HorizontalAlignment="Center" VerticalAlignment="Center" IsTabStop="False" WindowStyle="None" MouseLeftButtonDown="w_mainwindow_MouseLeftButtonDown">
+        Title="{Binding Title}" IsEnabled="{Binding IsEnabled}" Topmost="True"
+        ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}" ShowInTaskbar="False" Foreground="White" Focusable="False"
+        Icon="../Icons/iconmini.ico" IsTabStop="False" MouseLeftButtonDown="w_mainwindow_MouseLeftButtonDown" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" Closing="w_mainwindow_Closing">
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>
@@ -624,7 +624,7 @@
                         </StackPanel>
                     </StackPanel>
                     <Grid x:Name="g_tasten" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="0,-40,0,0">
-                        <Slider x:Name="s_balance" HorizontalAlignment="Left" Margin="184,5,0,0" VerticalAlignment="Top" Width="160" Minimum="-1" Maximum="1" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" ToolTip="Pan (L &amp; R)" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                        <Slider x:Name="s_balance" HorizontalAlignment="Left" Margin="184,0,0,0" VerticalAlignment="Top" Width="160" Minimum="-1" Maximum="1" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" ToolTip="Pan (L &amp; R)" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -634,7 +634,7 @@
                                 </TransformGroup>
                             </Slider.RenderTransform>
                         </Slider>
-                        <Button x:Name="b_zurück" Content="◄◄" Margin="0,0,100,0" VerticalAlignment="Center" Foreground="White" FontSize="20" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderBrush="Black" BorderThickness="2" Background="#E5000000" HorizontalAlignment="Center">
+                        <Button x:Name="b_zurück" Content="◄◄" Margin="0,30,120,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderBrush="Black" BorderThickness="2" Background="#E5000000" HorizontalAlignment="Center" FontSize="16" UseLayoutRounding="False" MinWidth="20" MinHeight="20">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -644,7 +644,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_vor" Content="►►" Margin="296,33,171,0" VerticalAlignment="Top" Foreground="White" FontSize="22" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}">
+                        <Button x:Name="b_vor" Content="►►" Margin="120,30,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="2" UseLayoutRounding="False" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -654,7 +654,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_laden" Content="Laden..." Margin="184,73,0,0" HorizontalAlignment="Left" Width="75" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Effect="{DynamicResource DropShadow}">
+                        <Button x:Name="b_laden" Content="Laden..." Margin="169.5,75,268.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="2" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -664,7 +664,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_leeren" Content="Leeren" Margin="269,73,0,0" HorizontalAlignment="Left" Foreground="White" ToolTip="Die Wiedergabe leeren" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Width="75" Effect="{DynamicResource DropShadow}">
+                        <Button x:Name="b_leeren" Content="Leeren" Margin="263.129,75,169.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="2" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -674,7 +674,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_play" Content=" ► " FontSize="30" VerticalAlignment="Top" Margin="237,28,224,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="True" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}">
+                        <Button x:Name="b_play" Content=" ► " VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="2" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>

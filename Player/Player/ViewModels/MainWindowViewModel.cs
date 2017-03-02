@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Player.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Player.ViewModels
 {
@@ -59,9 +62,56 @@ namespace Player.ViewModels
             }
         }
 
+        private int top = 0;
+        public int Top
+        {
+            get
+            {
+                return top;
+            }
+            set
+            {
+                top = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int left = 0;
+        public int Left
+        {
+            get
+            {
+                return left;
+            }
+            set
+            {
+                left = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public MainWindowViewModel()
         {
+            LoadSettings();
+        }   
 
-        }        
+        public void Close()
+        {
+            SaveSettings();
+        }
+        
+        private void LoadSettings()
+        {
+            Settings set = Settings.Default;
+            Left = set.WindowPosition.X;
+            Top = set.WindowPosition.Y;
+        }
+
+        private void SaveSettings()
+        {
+            Settings set = Settings.Default;
+            set.WindowPosition = new Point(Left, Top);
+            set.Save();
+        }
     }
 }
