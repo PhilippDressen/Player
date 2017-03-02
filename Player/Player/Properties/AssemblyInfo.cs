@@ -8,12 +8,12 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("Player")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Overlayplayer für Windows.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("RWTH Aachen")]
+[assembly: AssemblyCompany("Philipp Dreßen")]
 [assembly: AssemblyProduct("Player")]
-[assembly: AssemblyCopyright("Copyright © RWTH Aachen 2017")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © 2017 Philipp Dreßen")]
+[assembly: AssemblyTrademark("Philipp Dreßen")]
 [assembly: AssemblyCulture("")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 

@@ -17,7 +17,7 @@ namespace Player.ViewModels
             App.Current.Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
         }
 
-        private string title = "Title";
+        private string title = "Player";
         public string Title
         {
             get
@@ -41,6 +41,20 @@ namespace Player.ViewModels
             set
             {
                 isenabled = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool stayopen = false;
+        public bool StayOpen
+        {
+            get
+            {
+                return stayopen;
+            }
+            set
+            {
+                stayopen = value;
                 NotifyPropertyChanged();
             }
         }

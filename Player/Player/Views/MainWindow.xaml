@@ -505,9 +505,9 @@
                     <GradientStop Color="#FF212121" Offset="1"/>
                 </LinearGradientBrush>
             </ContextMenu.Background>
-            <CheckBox x:Name="cb_animationen" Click="cb_animationen_Click" Content="Offen bleiben" Foreground="White" />
-            <MenuItem x:Name="mi_background" Click="mi_background_Click" Header="Hintergrundbild festlegen..."/>
-            <MenuItem x:Name="mi_backgroundentfernen" Click="mi_backgroundentfernen_Click" Header="Hintergrundbild entfernen" />
+            <CheckBox x:Name="cb_stayopen" IsChecked="{Binding StayOpen}" Content="Offen bleiben" Foreground="White" />
+            <MenuItem x:Name="mi_setbackground" Visibility="Collapsed" Header="Hintergrundbild festlegen..."/>
+            <MenuItem x:Name="mi_removebackground" Visibility="Collapsed" Header="Hintergrundbild entfernen" />
         </ContextMenu>
     </Window.ContextMenu>
     <Grid>
@@ -562,7 +562,7 @@
                         </TransformGroup>
                     </Grid.RenderTransform>
                     <StackPanel Margin="0" VerticalAlignment="Top">
-                        <Slider x:Name="s_position" Margin="10,0,45,0" VerticalAlignment="Top" Cursor="Hand" Foreground="White" BorderBrush="Transparent" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TickPlacement="TopLeft" ValueChanged="s_position_ValueChanged" SmallChange="1" TickFrequency="1000000" RenderTransformOrigin="0.5,0.5" Padding="0" Maximum="0">
+                        <Slider x:Name="s_position" Margin="10,0,45,0" VerticalAlignment="Top" Cursor="Hand" Foreground="White" BorderBrush="Transparent" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TickPlacement="TopLeft" SmallChange="1" TickFrequency="1000000" RenderTransformOrigin="0.5,0.5" Padding="0" Maximum="0">
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -623,7 +623,7 @@
                             </StackPanel>
                         </StackPanel>
                         <Grid x:Name="g_tasten" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="0,-40,0,0">
-                            <Slider x:Name="s_balance" HorizontalAlignment="Left" Margin="184,5,0,0" VerticalAlignment="Top" Width="160" Minimum="-1" ValueChanged="s_balance_ValueChanged" Maximum="1" MouseDoubleClick="s_balance_MouseDoubleClick" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" ToolTip="Pan (L &amp; R)" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                            <Slider x:Name="s_balance" HorizontalAlignment="Left" Margin="184,5,0,0" VerticalAlignment="Top" Width="160" Minimum="-1" Maximum="1" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" ToolTip="Pan (L &amp; R)" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                                 <Slider.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -633,7 +633,7 @@
                                     </TransformGroup>
                                 </Slider.RenderTransform>
                             </Slider>
-                            <Button x:Name="b_zurück" Content="◄◄" Margin="0,0,100,0" Click="b_zurück_Click" VerticalAlignment="Center" Foreground="White" FontSize="20" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderBrush="Black" BorderThickness="2" Background="#E5000000" HorizontalAlignment="Center">
+                            <Button x:Name="b_zurück" Content="◄◄" Margin="0,0,100,0" VerticalAlignment="Center" Foreground="White" FontSize="20" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderBrush="Black" BorderThickness="2" Background="#E5000000" HorizontalAlignment="Center">
                                 <Button.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -643,7 +643,7 @@
                                     </TransformGroup>
                                 </Button.RenderTransform>
                             </Button>
-                            <Button x:Name="b_vor" Content="►►" Margin="296,33,171,0" VerticalAlignment="Top" Click="b_vor_Click" Foreground="White" FontSize="22" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}">
+                            <Button x:Name="b_vor" Content="►►" Margin="296,33,171,0" VerticalAlignment="Top" Foreground="White" FontSize="22" FontFamily="Arial" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}">
                                 <Button.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -653,7 +653,7 @@
                                     </TransformGroup>
                                 </Button.RenderTransform>
                             </Button>
-                            <Button x:Name="b_laden" Content="Laden..." Margin="184,73,0,0" HorizontalAlignment="Left" Width="75" Click="b_laden_Click" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Effect="{DynamicResource DropShadow}">
+                            <Button x:Name="b_laden" Content="Laden..." Margin="184,73,0,0" HorizontalAlignment="Left" Width="75" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Effect="{DynamicResource DropShadow}">
                                 <Button.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -663,7 +663,7 @@
                                     </TransformGroup>
                                 </Button.RenderTransform>
                             </Button>
-                            <Button x:Name="b_leeren" Content="Leeren" Margin="269,73,0,0" HorizontalAlignment="Left" Foreground="White" Click="b_leeren_Click" ToolTip="Die Wiedergabe leeren" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Width="75" Effect="{DynamicResource DropShadow}">
+                            <Button x:Name="b_leeren" Content="Leeren" Margin="269,73,0,0" HorizontalAlignment="Left" Foreground="White" ToolTip="Die Wiedergabe leeren" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="1" FontSize="14" Width="75" Effect="{DynamicResource DropShadow}">
                                 <Button.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -673,7 +673,7 @@
                                     </TransformGroup>
                                 </Button.RenderTransform>
                             </Button>
-                            <Button x:Name="b_play" Content=" ► " FontSize="30" VerticalAlignment="Top" Click="b_play_Click" Margin="237,28,224,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="True" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}">
+                            <Button x:Name="b_play" Content=" ► " FontSize="30" VerticalAlignment="Top" Margin="237,28,224,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="True" Style="{DynamicResource GlassButtonStyle}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}">
                                 <Button.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -693,7 +693,7 @@
                                     </TransformGroup>
                                 </Label.RenderTransform>
                             </Label>
-                            <Slider x:Name="s_speed" Margin="10,0,368,18" Height="18" VerticalAlignment="Bottom" ValueChanged="s_speed_ValueChanged" MouseDoubleClick="s_speed_MouseDoubleClick" TickPlacement="TopLeft" AutoToolTipPrecision="2" Maximum="2" Value="1" Minimum="0.5" ToolTip="Geschwindigkeit" TickFrequency="0.1" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                            <Slider x:Name="s_speed" Margin="10,0,368,18" Height="18" VerticalAlignment="Bottom" TickPlacement="TopLeft" AutoToolTipPrecision="2" Maximum="2" Value="1" Minimum="0.5" ToolTip="Geschwindigkeit" TickFrequency="0.1" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                                 <Slider.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -705,7 +705,7 @@
                             </Slider>
                             <StackPanel Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
                                 <StackPanel Orientation="Horizontal">
-                                    <CheckBox x:Name="cb_wiederholen" Content="" Margin="0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Playlist wiederholen" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_Wiederholen_Click" Style="{DynamicResource RepeatCBStyle}" BorderBrush="White" Effect="{DynamicResource DropShadow}">
+                                    <CheckBox x:Name="cb_wiederholen" Content="" Margin="0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Playlist wiederholen" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource RepeatCBStyle}" BorderBrush="White" Effect="{DynamicResource DropShadow}">
                                         <CheckBox.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -715,7 +715,7 @@
                                             </TransformGroup>
                                         </CheckBox.RenderTransform>
                                     </CheckBox>
-                                    <CheckBox x:Name="cb_zufall" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" ToolTip="Zufallswiedergabe" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_zufall_Click" Style="{DynamicResource RandomCBStyle}" Effect="{DynamicResource DropShadow}">
+                                    <CheckBox x:Name="cb_zufall" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" ToolTip="Zufallswiedergabe" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource RandomCBStyle}" Effect="{DynamicResource DropShadow}">
                                         <CheckBox.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -725,7 +725,7 @@
                                             </TransformGroup>
                                         </CheckBox.RenderTransform>
                                     </CheckBox>
-                                    <CheckBox x:Name="cb_mute" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Background="White" Foreground="White" ToolTip="Stumm" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_mute_Click" Style="{DynamicResource MuteCBStyle}" Effect="{DynamicResource DropShadow}">
+                                    <CheckBox x:Name="cb_mute" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Background="White" Foreground="White" ToolTip="Stumm" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource MuteCBStyle}" Effect="{DynamicResource DropShadow}">
                                         <CheckBox.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -736,7 +736,7 @@
                                         </CheckBox.RenderTransform>
                                     </CheckBox>
                                 </StackPanel>
-                                <CheckBox x:Name="cb_positonmerken" Content="Abspielposition merken" Margin="0,5,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Letzte Wiedergabeposition (im Track) merken" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Click="cb_positonmerken_Click" Effect="{DynamicResource DropShadow}">
+                                <CheckBox x:Name="cb_positonmerken" Content="Abspielposition merken" Margin="0,5,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Letzte Wiedergabeposition (im Track) merken" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Effect="{DynamicResource DropShadow}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -749,7 +749,7 @@
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-                    <Button x:Name="b_schließen" Content="X" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="b_schließen_Click" Foreground="White" Width="20" ToolTip="Beenden" RenderTransformOrigin="0.5,0.5">
+                    <Button x:Name="b_schließen" Content="X" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Width="20" ToolTip="Beenden" RenderTransformOrigin="0.5,0.5">
                         <Button.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -765,7 +765,7 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Slider x:Name="s_lautstärke" HorizontalAlignment="Right" Margin="0,35,12,68" Orientation="Vertical" Maximum="100" Value="80" ValueChanged="s_lautstärke_ValueChanged" MouseDoubleClick="s_lautstärke_MouseDoubleClick" AutoToolTipPlacement="TopLeft" ToolTip="Lautstärke" RenderTransformOrigin="0.5,0.5" TickPlacement="Both" TickFrequency="10" >
+                    <Slider x:Name="s_lautstärke" HorizontalAlignment="Right" Margin="0,35,12,68" Orientation="Vertical" Maximum="100" Value="80" AutoToolTipPlacement="TopLeft" ToolTip="Lautstärke" RenderTransformOrigin="0.5,0.5" TickPlacement="Both" TickFrequency="10" >
                         <Slider.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -790,16 +790,16 @@
                         </Label.Triggers>
                     </Label>
                     <Border BorderBrush="White" BorderThickness="2,2,2,1" Margin="5,0" VerticalAlignment="Bottom" CornerRadius="1,1,0,0">
-                        <ScrollViewer x:Name="sv_tracks" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" MouseLeave="sv_tracks_MouseLeave" Background="#D8000000" PreviewMouseLeftButtonDown="sv_tracks_PreviewMouseLeftButtonDown" Foreground="White">
+                        <ScrollViewer x:Name="sv_tracks" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" Background="#D8000000" Foreground="White">
                             <Grid>
                                 <DockPanel>
                                     <Grid DockPanel.Dock="Top" x:Name="g_suche" Margin="10,5,10,0" VerticalAlignment="Top" IsEnabled="False">
                                         <Label x:Name="l_suchen" Content="Suchen..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Padding="0" Grid.IsSharedSizeScope="True"/>
-                                        <TextBox x:Name="tb_suche" TextWrapping="Wrap" TextChanged="tb_suche_TextChanged" GotFocus="tb_suche_GotFocus" LostFocus="tb_suche_LostFocus" Background="{x:Null}" Foreground="White" BorderBrush="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0" FontSize="14" ContextMenu="{x:Null}" Height="20" CaretBrush="White"/>
-                                        <Button x:Name="b_suchelöschen" Content="X" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#00000000" BorderBrush="#FF005DFF" Foreground="White" Padding="5,1" Click="b_suchelöschen_Click" Focusable="False" Visibility="Collapsed"/>
+                                        <TextBox x:Name="tb_suche" TextWrapping="Wrap" Background="{x:Null}" Foreground="White" BorderBrush="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0" FontSize="14" ContextMenu="{x:Null}" Height="20" CaretBrush="White"/>
+                                        <Button x:Name="b_suchelöschen" Content="X" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#00000000" BorderBrush="#FF005DFF" Foreground="White" Padding="5,1" Focusable="False" Visibility="Collapsed"/>
                                     </Grid>
                                     <Grid DockPanel.Dock="Bottom" Margin="0">
-                                        <ListBox x:Name="lb_playlists" Foreground="#00000000" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" Visibility="Collapsed" ItemTemplate="{DynamicResource PlaylistTemplate}" MouseDoubleClick="lb_playlists_MouseDoubleClick" ContextMenuOpening="lb_playlists_ContextMenuOpening">
+                                        <ListBox x:Name="lb_playlists" Foreground="#00000000" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" Visibility="Collapsed" ItemTemplate="{DynamicResource PlaylistTemplate}">
                                             <ListBox.RenderTransform>
                                                 <TransformGroup>
                                                     <ScaleTransform/>
@@ -816,17 +816,17 @@
                                                             <GradientStop Color="#FF212121" Offset="1"/>
                                                         </LinearGradientBrush>
                                                     </ContextMenu.Background>
-                                                    <MenuItem Header="Aktuelle Wiedergabe" Click="mi_tracks_Click" x:Name="mi_tracks" FontWeight="Bold" FontSize="14" Background="{x:Null}"/>
-                                                    <MenuItem Header="Playlist importieren..." Click="mi_laden_Click" x:Name="mi_laden" Visibility="Collapsed" FontWeight="Bold" FontSize="14" Background="{x:Null}"/>
-                                                    <MenuItem Header="Neu..." Click="mi_neu_Click" x:Name="mi_neu" Background="{x:Null}"/>
-                                                    <MenuItem Header="Umbenennen..." Click="mi_umbenennen_Click" x:Name="mi_umbennenen" Background="{x:Null}"/>
-                                                    <MenuItem Header="Aktuelle Wiedergabe -&gt;" Click="mi_hinzufügen_Click"  x:Name="mi_hinzufügen" Background="{x:Null}"/>
-                                                    <MenuItem Header="Aktueller Track -&gt;" Click="mi_track_Click"  x:Name="mi_track" Background="{x:Null}"/>
-                                                    <MenuItem Header="Entfernen" Click="mi_playlistentfernen_Click" IsEnabled="False" x:Name="mi_playlistentfernen" Background="{x:Null}"/>
+                                                    <MenuItem Header="Aktuelle Wiedergabe" x:Name="mi_tracks" FontWeight="Bold" FontSize="14" Background="{x:Null}"/>
+                                                    <MenuItem Header="Playlist importieren..." x:Name="mi_laden" Visibility="Collapsed" FontWeight="Bold" FontSize="14" Background="{x:Null}"/>
+                                                    <MenuItem Header="Neu..." x:Name="mi_neu" Background="{x:Null}"/>
+                                                    <MenuItem Header="Umbenennen..." x:Name="mi_umbennenen" Background="{x:Null}"/>
+                                                    <MenuItem Header="Aktuelle Wiedergabe -&gt;" x:Name="mi_hinzufügen" Background="{x:Null}"/>
+                                                    <MenuItem Header="Aktueller Track -&gt;" x:Name="mi_track" Background="{x:Null}"/>
+                                                    <MenuItem Header="Entfernen" IsEnabled="False" x:Name="mi_playlistentfernen" Background="{x:Null}"/>
                                                 </ContextMenu>
                                             </ListBox.ContextMenu>
                                         </ListBox>
-                                        <ListBox x:Name="lb_tracks"  Foreground="White" AllowDrop="True" MouseDoubleClick="lb_tracks_MouseDoubleClick" PreviewMouseUp="lb_tracks_PreviewMouseUp" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" ItemTemplate="{DynamicResource TrackTemplate}" PreviewMouseLeftButtonDown="lb_tracks_PreviewMouseLeftButtonDown" MouseMove="lb_tracks_MouseMove" ContextMenuOpening="lb_tracks_ContextMenuOpening">
+                                        <ListBox x:Name="lb_tracks"  Foreground="White" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" ItemTemplate="{DynamicResource TrackTemplate}">
                                             <ListBox.RenderTransform>
                                                 <TransformGroup>
                                                     <ScaleTransform/>
@@ -843,13 +843,13 @@
                                                             <GradientStop Color="#FF212121" Offset="1"/>
                                                         </LinearGradientBrush>
                                                     </ContextMenu.Background>
-                                                    <MenuItem Header="Playlists" Click="mi_playlists_Click" x:Name="mi_playlists" FontWeight="Bold" FontSize="14" Background="{x:Null}"/>
-                                                    <MenuItem Header="Nach Oben" Click="mi_oben_Click" x:Name="mi_oben" Background="{x:Null}"/>
-                                                    <MenuItem Header="Von Vorn" Click="mi_vonvorn_Click" IsEnabled="True" x:Name="mi_vonvorn" Background="{x:Null}"/>
-                                                    <MenuItem Header="Verschieben..." Click="mi_tauschen_Click" IsEnabled="False" x:Name="mi_verschieben" ToolTip="Dann den zu tauschenden Track anklicken" Background="{x:Null}" Visibility="Collapsed"/>
-                                                    <MenuItem Header="Tags bearbeiten..." x:Name="mi_tags" ToolTip="ID3-Tag des Tracks bearbeiten" Background="{x:Null}" Click="mi_tags_Click"/>
-                                                    <MenuItem Header="Entfernen" Click="mi_entfernen_Click" IsEnabled="False" x:Name="mi_entfernen" Background="{x:Null}"/>
-                                                    <MenuItem Header="Nach Unten" Click="mi_unten_Click" x:Name="mi_unten" Background="{x:Null}"/>
+                                                    <MenuItem Header="Playlists" x:Name="mi_playlists" FontWeight="Bold" FontSize="14" Background="{x:Null}"/>
+                                                    <MenuItem Header="Nach Oben" x:Name="mi_oben" Background="{x:Null}"/>
+                                                    <MenuItem Header="Von Vorn" IsEnabled="True" x:Name="mi_vonvorn" Background="{x:Null}"/>
+                                                    <MenuItem Header="Verschieben..." IsEnabled="False" x:Name="mi_verschieben" ToolTip="Dann den zu tauschenden Track anklicken" Background="{x:Null}" Visibility="Collapsed"/>
+                                                    <MenuItem Header="Tags bearbeiten..." x:Name="mi_tags" ToolTip="ID3-Tag des Tracks bearbeiten" Background="{x:Null}"/>
+                                                    <MenuItem Header="Entfernen" IsEnabled="False" x:Name="mi_entfernen" Background="{x:Null}"/>
+                                                    <MenuItem Header="Nach Unten" x:Name="mi_unten" Background="{x:Null}"/>
                                                 </ContextMenu>
                                             </ListBox.ContextMenu>
                                         </ListBox>
