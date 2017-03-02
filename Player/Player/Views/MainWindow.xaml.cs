@@ -27,5 +27,15 @@ namespace Player.Views
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void b_close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void w_mainwindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }
