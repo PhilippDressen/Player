@@ -16,6 +16,18 @@ namespace Player.Helpers
 
     class Log
     {
+
+        public static string LogPath
+        {
+            get
+            {
+                string p = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Player");
+                if (!Directory.Exists(p))
+                    Directory.CreateDirectory(p);
+                return Path.Combine(p, "Player.log");
+            }
+        }
+
         static bool _canlog = true;
         public static bool CanLog
         {
@@ -24,8 +36,6 @@ namespace Player.Helpers
                 return _canlog;
             }
         }
-
-        static string logfile = Path.Combine(PlayController.AppFolder, "Player.log");
 
         static StreamWriter _logwriter;
         public static StreamWriter LogWriter
@@ -40,16 +50,16 @@ namespace Player.Helpers
                     try
                     {
                         bool overwrite = false;
-                        if (File.Exists(logfile))
+                        if (File.Exists(LogPath))
                         {
                             //Logfile erstellen oder zum Anhängen öffnen
-                            FileInfo fi = new FileInfo(logfile);
+                            FileInfo fi = new FileInfo(LogPath);
                             if (fi.Length >= 1000000)
                             {
                                 overwrite = true;
                             }
                         }
-                        _logwriter = new StreamWriter(logfile, !overwrite, Encoding.Unicode);
+                        _logwriter = new StreamWriter(LogPath, !overwrite, Encoding.Unicode);
                         _logwriter.AutoFlush = true;
                         Write("Log geöffnet. Overwrite: " + overwrite, EventType.Info);
                     }

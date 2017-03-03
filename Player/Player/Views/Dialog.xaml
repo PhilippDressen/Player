@@ -1,0 +1,67 @@
+﻿<Window x:Name="w_dialog" x:Class="Player.Dialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dialog" Icon="icon.ico" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" ShowInTaskbar="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" SizeToContent="Height" Width="400">
+    <Window.Resources>
+        <Style x:Key="GlassButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="ButtonBorder" CornerRadius="5" BorderThickness="2" Background="#AA000000" BorderBrush="#99FFFFFF" RenderTransformOrigin="0.5,0.5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" CornerRadius="5">
+                                    <Border.Background>
+                                        <LinearGradientBrush >
+                                            <GradientStop Color="#08FFFFFF" Offset="0"/>
+                                            <GradientStop Color="#88FFFFFF" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                </Border>
+                                <ContentPresenter Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform" TargetName="ButtonBorder">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="0.99" ScaleY="0.99"/>
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5">
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border x:Name="b_hintergrund" BorderBrush="White" BorderThickness="1" Margin="0" CornerRadius="5">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#7F000000" Offset="0"/>
+                <GradientStop Color="Black" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid Margin="0,0,-2,-2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="b_ja" Content="Ja" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="76" IsDefault="True" Style="{DynamicResource GlassButtonStyle}" Click="b_ja_Click"/>
+            <Button x:Name="b_nein" Content="Nein" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="76" IsDefault="True" Style="{DynamicResource GlassButtonStyle}" Click="b_nein_Click"/>
+            <TextBox x:Name="tb_msg" Margin="10,10,10,45" TextWrapping="Wrap" Text="Nachricht" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" SelectionBrush="{x:Null}" SelectionOpacity="0" UndoLimit="0" IsReadOnly="True" FontWeight="Bold" Focusable="False" IsHitTestVisible="True" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="0"/>
+
+        </Grid>
+    </Border>
+</Window>

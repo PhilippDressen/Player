@@ -1,7 +1,7 @@
 ﻿
 namespace Player.Controllers
 {
-    class PlayController
+    class PlayContext
     {
         
     }
