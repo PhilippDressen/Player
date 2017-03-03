@@ -11,13 +11,14 @@ namespace Player.Models
 {
     public class Track
     {
-        public Track()
+        public Track(string path = null)
         {
-            Id = Guid.NewGuid();
+            this.Id = Guid.NewGuid();
+            this.Path = path;
         }
 
-        bool _hastags = false;
-        public bool HasTags { get { return _hastags; } }
+        bool initialized = false;
+        public bool Initialized { get { return initialized; } }
 
         public Guid Id { get; }
 
@@ -27,13 +28,66 @@ namespace Player.Models
 
         public string Album { get; set; }
 
-        public string Path { get; set; }
+        public string Path { get; private set; }
 
-        public DateTime Year { get; set; }
+        public long Year { get; set; }
 
         public TimeSpan Length { get; set; }
 
         public BitmapImage AlbumArt { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0} von {1}", Title, Performer);
+        }
+
+        public void Initialize()
+        {
+            Reset();
+            if (System.IO.Path.GetExtension(this.Path) != ".m3u")
+            {
+                TagLib.File tagfile = TagLib.File.Create(this.Path);
+                TagLib.Tag t = tagfile.Tag;
+                tagfile.Dispose();
+                if (string.IsNullOrEmpty(t.Title))
+                    this.Title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
+                else
+                    this.Title = t.Title;
+                this.Performer = t.FirstPerformer;
+                this.Album = t.Album;
+                if (t.Year > 0)
+                    this.Year = new DateTime(Convert.ToInt32(t.Year), 1, 1);
+                if (t.Pictures.Count() > 0)
+                {
+                    MemoryStream ms = new MemoryStream(t.Pictures[0].Data.Data);
+                    BitmapImage Cover = new BitmapImage();
+                    Cover.BeginInit();
+                    Cover.StreamSource = ms;
+                    Cover.EndInit();
+                    this.AlbumArt = Cover;
+                }
+                if (this.AlbumArt != null)
+                    this.AlbumArt.Freeze();
+            }
+            else
+            {
+                this.Path = this.Path;
+                this.Title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
+                this.Album = System.IO.Path.GetDirectoryName(this.Path);
+            }
+            this.initialized = true;
+        }
+
+        private void Reset()
+        {
+            Title = null;
+            Performer = null;
+            Album = null;
+            Year = 0;
+            Length = new TimeSpan();
+            AlbumArt = null;
+            initialized = false;
+        }
 
         public static Track ParseFromTaglib(TagLib.Tag t)
         {
@@ -64,7 +118,6 @@ namespace Player.Models
             if (System.IO.Path.GetExtension(path) != ".m3u")
             {
                 tag.Path = path;
-
                 TagLib.File tagfile = TagLib.File.Create(path);
                 TagLib.Tag t = tagfile.Tag;
                 tagfile.Dispose();
@@ -87,7 +140,6 @@ namespace Player.Models
                 }
                 if (tag.AlbumArt != null)
                     tag.AlbumArt.Freeze();
-                tag._hastags = true;
             }
             else
             {
@@ -95,12 +147,8 @@ namespace Player.Models
                 tag.Title = System.IO.Path.GetFileNameWithoutExtension(path);
                 tag.Album = System.IO.Path.GetDirectoryName(path);
             }
+            tag.initialized = true;            
             return tag;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0} von {1}", Title, Performer);
-        }
+        }        
     }
 }

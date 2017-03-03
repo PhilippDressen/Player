@@ -9,44 +9,58 @@ namespace Player.Models
 {
     public class Playlist
     {
-        public Playlist(string path)
-        {
-            Path = path;
-            if (File.Exists(Path))
-            {
-                XDocument xd = XDocument.Load(Path);
-                Length = xd.Root.Element("body").Element("seq").Elements("media").Count();
-            }
-        }
+        public string Path { get; set; }
 
         public string Name
-        {
-            get
-            {
-                return System.IO.Path.GetFileNameWithoutExtension(Path);
-            }
-        }
-
-        public string Path { get; set; }
+        { get; private set; }
 
         public int Length
         {
-            get;
-            set;
+            get
+            {
+                return Tracks.Count;
+            }
         }
 
-        public static Playlist Create(string path)
+        public List<Track> Tracks
+        { get; }
+
+        public Playlist(string path = null, string name = null)
         {
-            Playlist p = new Playlist(path);
-            return p;
+            this.Name = name;
+            this.Path = path;
+            this.Tracks = new List<Track>();            
         }
 
         public override string ToString()
         {
-            return Name;
+            return string.Format("{0} ({1})", Name, Length);
         }
 
-        public static Playlist SaveToPlaylist(IEnumerable<Track> tracks, string path)
+        public static Playlist Load(string path)
+        {
+            Playlist pl = new Playlist(path);
+            XDocument xd = XDocument.Load(path);
+            if (xd.Element("smil")?.Element("head")?.Element("title")?.Value != null)
+            {
+                pl.Name = xd.Element("smil")?.Element("head")?.Element("title").Value;
+            }
+
+            if (xd.Element("smil")?.Element("body")?.Element("seq") != null)
+            {
+                foreach (XElement xe in xd.Element("smil")?.Element("body")?.Element("seq").Elements("media"))
+                {
+                    if (xe.Attribute("src") != null)
+                    {
+                        pl.Tracks.Add(new Track(xe.Attribute("src").Value));
+                    }
+                }                
+            }
+
+            return pl;
+        }
+
+        public void Save(string path)
         {
             Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
             //try
@@ -87,5 +101,7 @@ namespace Player.Models
             xd.Save(path);
             return new Playlist(path);
         }
+
+        
     }
 }
