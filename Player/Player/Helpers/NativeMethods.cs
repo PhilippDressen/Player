@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Diagnostics;
+using Player.Helpers;
 
 namespace Player
 {

@@ -47,7 +47,7 @@ namespace Player.Views
             this.DragMove();
         }
 
-        private void w_mainwindow_Closing(object sender, CancelEventArgs e)
+        private void w_mainwindow_Closed(object sender, EventArgs e)
         {
             ViewModel.Close();
         }

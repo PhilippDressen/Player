@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Threading;
+using Player.Views;
 
-namespace Player
+namespace Player.Views
 {
     public partial class Laden : Window
     {
@@ -58,7 +59,8 @@ namespace Player
             MainWindow parent = this.Owner as MainWindow;
             if (parent != null)
             {
-                parent.Abbrechen = true;                
+                //parent.Abbrechen = true;
+                //To Do: Cencellation            
             }
             this.Close();
         }

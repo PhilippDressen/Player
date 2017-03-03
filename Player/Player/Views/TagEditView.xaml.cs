@@ -16,8 +16,10 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using TagLib.Id3v2;
 using System.IO;
+using Player.Models;
+using Player.Helpers;
 
-namespace Player
+namespace Player.Views
 {
     /// <summary>
     /// Interaktionslogik für TagEditView.xaml
@@ -32,10 +34,10 @@ namespace Player
             InitializeComponent();
         }
 
-        public static void Show(Track t)
+        public static void Show(Window owner, Track t)
         {
             TagEditView tev = new TagEditView();
-            tev.Owner = Prop.View;
+            tev.Owner = owner;
             tev.Show();
             new Thread(() => tev.Rescan(t)).Start();
         }
@@ -238,14 +240,15 @@ namespace Player
                 TagFile.Save();
                 Dispatcher.Invoke(() =>
                     {
-                        if (TagTrack != null && Prop.View != null && Prop.Playlist.Contains(TagTrack))
-                        {
-                            int ind = Prop.Playlist.IndexOf(TagTrack);
-                            Prop.Playlist.Remove(TagTrack);
-                            Track t = Track.ParseFromTaglib(TagFile.Tag);
-                            t.Path = TagFile.Name;
-                            Prop.Playlist.Insert(ind, t);
-                        }
+                        //if (TagTrack != null && Prop.View != null && Prop.Playlist.Contains(TagTrack))
+                        //{
+                        //    int ind = Prop.Playlist.IndexOf(TagTrack);
+                        //    Prop.Playlist.Remove(TagTrack);
+                        //    Track t = Track.ParseFromTaglib(TagFile.Tag);
+                        //    t.Path = TagFile.Name;
+                        //    Prop.Playlist.Insert(ind, t);
+                        //}
+                        // To Do: throw changed tags back to origin
                     });
             }
             catch (Exception ex)

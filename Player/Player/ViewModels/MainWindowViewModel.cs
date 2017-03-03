@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Deployment.Application;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Player.Helpers;
+using System.Reflection;
 
 namespace Player.ViewModels
 {
@@ -66,6 +68,9 @@ namespace Player.ViewModels
                 return p;
             }
         }
+
+        public System.Windows.Forms.NotifyIcon TaskbarIcon
+        { get; }
 
         private string title = "Player";
         public string Title
@@ -182,12 +187,38 @@ namespace Player.ViewModels
 
         public MainWindowViewModel()
         {
+            TaskbarIcon = new System.Windows.Forms.NotifyIcon();
+            SetupTaskbarIcon();
             LoadSettings().Wait();
-        }   
+        }        
+
+        private void SetupTaskbarIcon()
+        {
+            TaskbarIcon.Icon = new Icon("Icons/iconmini.ico");
+            TaskbarIcon.Text = Title;
+            TaskbarIcon.Visible = true;
+            TaskbarIcon.MouseDoubleClick += TaskbarIcon_MouseDoubleClick;
+            System.Windows.Forms.MenuItem mi_close = new System.Windows.Forms.MenuItem("Beenden");
+            mi_close.Click += Mi_close_Click;
+            System.Windows.Forms.MenuItem[] menuitems = new System.Windows.Forms.MenuItem[] { mi_close };
+            TaskbarIcon.ContextMenu = new System.Windows.Forms.ContextMenu(menuitems);
+        }
+
+        private void Mi_close_Click(object sender, EventArgs e)
+        {
+            Close();
+            App.Current.Shutdown(0);
+        }
+
+        private void TaskbarIcon_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            TaskbarIcon.ShowBalloonTip(3000, Title, "This is Music!", System.Windows.Forms.ToolTipIcon.Info);
+        }
 
         public void Close()
         {
             Task.Run(SaveSettings);
+            TaskbarIcon.Dispose();
         }
         
         private async Task LoadSettings()
@@ -204,6 +235,7 @@ namespace Player.ViewModels
             Status = "Einstellungen speichern...";
             Settings set = Settings.Default;
             set.WindowPosition = new Point(Left, Top);
+            //set.
             set.Save();
             Status = null;
         }

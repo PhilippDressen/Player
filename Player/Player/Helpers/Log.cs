@@ -14,7 +14,7 @@ namespace Player.Helpers
         FatalSystemDestroyingUltraError = 9001
     }
 
-    class Log
+    public class Log
     {
 
         public static string LogPath

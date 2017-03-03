@@ -1,8 +1,8 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="w_laden" x:Class="Player.Laden"
-        Title="Laden..." Icon="icon.ico" Visibility="Visible" WindowStyle="None" Topmost="True" IsTabStop="False" Focusable="False" AllowsTransparency="True" WindowStartupLocation="CenterScreen" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" ShowInTaskbar="False" >
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="w_laden" x:Class="Player.Views.Laden"
+        Title="Laden..." Icon="/Icons/icon.ico" Visibility="Visible" WindowStyle="None" Topmost="True" IsTabStop="False" Focusable="False" AllowsTransparency="True" WindowStartupLocation="CenterScreen" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" ShowInTaskbar="False" >
     <Window.Resources>
         <Style x:Key="GlassButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="WhiteSmoke" />

@@ -9,7 +9,7 @@ using Player.Helpers;
 
 namespace Player.Models
 {
-    class Track
+    public class Track
     {
         public Track()
         {

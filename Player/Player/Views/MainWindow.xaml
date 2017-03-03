@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="{Binding Title}" IsEnabled="{Binding IsEnabled}" Topmost="True"
         ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}" ShowInTaskbar="False" Foreground="White" Focusable="False"
-        Icon="../Icons/iconmini.ico" IsTabStop="False" MouseLeftButtonDown="w_mainwindow_MouseLeftButtonDown" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" Closing="w_mainwindow_Closing">
+        Icon="../Icons/iconmini.ico" IsTabStop="False" MouseLeftButtonDown="w_mainwindow_MouseLeftButtonDown" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" Closed="w_mainwindow_Closed">
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>

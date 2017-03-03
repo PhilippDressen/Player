@@ -7,7 +7,7 @@ using Player.Helpers;
 
 namespace Player.Models
 {
-    class Playlist
+    public class Playlist
     {
         public Playlist(string path)
         {
@@ -19,7 +19,7 @@ namespace Player.Models
             }
         }
 
-        public String Name
+        public string Name
         {
             get
             {
@@ -27,7 +27,7 @@ namespace Player.Models
             }
         }
 
-        public String Path { get; set; }
+        public string Path { get; set; }
 
         public int Length
         {
@@ -48,15 +48,16 @@ namespace Player.Models
 
         public static Playlist SaveToPlaylist(IEnumerable<Track> tracks, string path)
         {
-            try
-            {
-                Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
-            }
-            catch (Exception ex)
-            {
-                Log.Write(ex.ToString(), EventType.Error);
-                App.Current.Dispatcher.Invoke(() => Info.Show("Playlistordner konnte nicht erstellt werden!"));
-            }
+            Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
+            //try
+            //{
+            //    Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Write(ex.ToString(), EventType.Error);
+            //    App.Current.Dispatcher.Invoke(() => Info.Show("Playlistordner konnte nicht erstellt werden!"));
+            //}
 
             XDocument xd = new XDocument();
             xd.AddFirst(new XElement("smil"));
