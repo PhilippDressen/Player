@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Player.ViewModels
@@ -20,6 +21,49 @@ namespace Player.ViewModels
         private void NotifyPropertyChanged([CallerMemberName]string name = null)
         {
             App.Current.Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
+        }
+
+        static MediaPlayer mediaplayer;
+        public static MediaPlayer MediaPlayer
+        {
+            get
+            {
+                if (mediaplayer == null)
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        mediaplayer = new MediaPlayer();
+                    });
+                return mediaplayer;
+            }
+        }
+
+        public static string CurrentVersion
+        {
+            get
+            {
+                return ApplicationDeployment.IsNetworkDeployed
+                       ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString()
+                       : Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
+        }
+
+        public static String PlaylistFolder
+        {
+            get
+            {
+                return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten");
+            }
+        }
+
+        public static String AppFolder
+        {
+            get
+            {
+                string p = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Player");
+                if (!Directory.Exists(p))
+                    Directory.CreateDirectory(p);
+                return p;
+            }
         }
 
         private string title = "Player";
