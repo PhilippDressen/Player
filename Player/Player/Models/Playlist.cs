@@ -63,15 +63,6 @@ namespace Player.Models
         public void Save(string path)
         {
             Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
-            //try
-            //{
-            //    Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
-            //}
-            //catch (Exception ex)
-            //{
-            //    Log.Write(ex.ToString(), EventType.Error);
-            //    App.Current.Dispatcher.Invoke(() => Info.Show("Playlistordner konnte nicht erstellt werden!"));
-            //}
 
             XDocument xd = new XDocument();
             xd.AddFirst(new XElement("smil"));
@@ -83,13 +74,13 @@ namespace Player.Models
                     ),
                     new XElement("meta",
                     new XAttribute("name", "ItemCount"),
-                    new XAttribute("content", tracks.Count())
+                    new XAttribute("content", Tracks.Count())
                     ),
                     new XElement("title", System.IO.Path.GetFileNameWithoutExtension(path))
                 );
             xd.Root.Add(head);
             XElement seq = new XElement("seq");
-            foreach (Track t in tracks)
+            foreach (Track t in Tracks)
             {
                 seq.Add(
                     new XElement("media",
@@ -99,9 +90,7 @@ namespace Player.Models
             }
             xd.Root.Add(new XElement("body", seq));
             xd.Save(path);
-            return new Playlist(path);
         }
-
         
     }
 }

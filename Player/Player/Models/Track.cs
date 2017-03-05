@@ -30,7 +30,7 @@ namespace Player.Models
 
         public string Path { get; private set; }
 
-        public long Year { get; set; }
+        public uint Year { get; set; }
 
         public TimeSpan Length { get; set; }
 
@@ -56,7 +56,7 @@ namespace Player.Models
                 this.Performer = t.FirstPerformer;
                 this.Album = t.Album;
                 if (t.Year > 0)
-                    this.Year = new DateTime(Convert.ToInt32(t.Year), 1, 1);
+                    this.Year = Convert.ToUInt32(t.Year);
                 if (t.Pictures.Count() > 0)
                 {
                     MemoryStream ms = new MemoryStream(t.Pictures[0].Data.Data);
@@ -96,7 +96,7 @@ namespace Player.Models
             tag.Performer = t.FirstPerformer;
             tag.Album = t.Album;
             if (t.Year > 0)
-                tag.Year = new DateTime(Convert.ToInt32(t.Year), 1, 1);
+                tag.Year = Convert.ToUInt32(t.Year);
             if (t.Pictures.Count() > 0)
             {
                 MemoryStream ms = new MemoryStream(t.Pictures[0].Data.Data);
@@ -128,7 +128,7 @@ namespace Player.Models
                 tag.Performer = t.FirstPerformer;
                 tag.Album = t.Album;
                 if (t.Year > 0)
-                    tag.Year = new DateTime(Convert.ToInt32(t.Year), 1, 1);
+                    tag.Year = Convert.ToUInt32(t.Year);
                 if (t.Pictures.Count() > 0)
                 {
                     MemoryStream ms = new MemoryStream(t.Pictures[0].Data.Data);
