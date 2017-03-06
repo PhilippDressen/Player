@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Xml.Linq;
 using Player.Helpers;
+using System.Collections.ObjectModel;
 
 namespace Player.Models
 {
@@ -22,14 +23,14 @@ namespace Player.Models
             }
         }
 
-        public List<Track> Tracks
+        public ObservableCollection<Track> Tracks
         { get; }
 
         public Playlist(string path = null, string name = null)
         {
             this.Name = name;
             this.Path = path;
-            this.Tracks = new List<Track>();            
+            this.Tracks = new ObservableCollection<Track>();            
         }
 
         public override string ToString()

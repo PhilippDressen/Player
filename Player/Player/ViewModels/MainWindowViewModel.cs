@@ -41,17 +41,17 @@ namespace Player.ViewModels
             }
         }
 
-        public static string CurrentVersion
+        public static Version CurrentVersion
         {
             get
             {
                 return ApplicationDeployment.IsNetworkDeployed
-                       ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString()
-                       : Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                       ? ApplicationDeployment.CurrentDeployment.CurrentVersion
+                       : Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
 
-        public static String PlaylistFolder
+        public static string PlaylistFolder
         {
             get
             {
@@ -59,7 +59,7 @@ namespace Player.ViewModels
             }
         }
 
-        public static String AppFolder
+        public static string AppFolder
         {
             get
             {
@@ -181,6 +181,20 @@ namespace Player.ViewModels
             set
             {
                 position = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private Playlist playlist;
+        public Playlist Playlist
+        {
+            get
+            {
+                return playlist;
+            }
+            set
+            {
+                playlist = value;
                 NotifyPropertyChanged();
             }
         }

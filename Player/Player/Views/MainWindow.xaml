@@ -866,7 +866,7 @@
                                     <Button x:Name="b_suchelöschen" Content="X" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#00000000" BorderBrush="#FF005DFF" Foreground="White" Padding="5,1" Focusable="False" Visibility="Collapsed"/>
                                 </Grid>
                                 <Grid DockPanel.Dock="Bottom" Margin="0">
-                                    <ListBox x:Name="lb_playlists" Foreground="#00000000" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" Visibility="Collapsed" ItemTemplate="{DynamicResource PlaylistTemplate}">
+                                    <ListBox x:Name="lb_playlists" Foreground="#00000000" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" Visibility="Collapsed" ItemTemplate="{DynamicResource PlaylistTemplate}" >
                                         <ListBox.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -893,7 +893,7 @@
                                             </ContextMenu>
                                         </ListBox.ContextMenu>
                                     </ListBox>
-                                    <ListBox x:Name="lb_tracks"  Foreground="White" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" ItemTemplate="{DynamicResource TrackTemplate}">
+                                    <ListBox x:Name="lb_tracks"  Foreground="White" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" ItemTemplate="{DynamicResource TrackTemplate}" ItemsSource="{Binding Playlist.Tracks}">
                                         <ListBox.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
