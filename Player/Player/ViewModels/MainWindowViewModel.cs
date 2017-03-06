@@ -41,6 +41,20 @@ namespace Player.ViewModels
             }
         }
 
+        private bool isplaying = false;
+        public bool IsPlaying
+        {
+            get
+            {
+                return isplaying;
+            }
+            set
+            {
+                isplaying = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public static Version CurrentVersion
         {
             get
@@ -198,6 +212,8 @@ namespace Player.ViewModels
                 NotifyPropertyChanged();
             }
         }
+
+        private NativeMethods natives;
         #endregion
 
         public MainWindowViewModel()
@@ -205,7 +221,43 @@ namespace Player.ViewModels
             TaskbarIcon = new System.Windows.Forms.NotifyIcon();
             SetupTaskbarIcon();
             LoadSettings().Wait();
-        }        
+            natives = new NativeMethods();
+            natives.KeyPressed += Natives_KeyPressed;
+        }
+
+        private void Natives_KeyPressed(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.Add:
+                    if (IsPlaying)
+                        Pause();
+                    else
+                        Play();
+                    break;
+                case ConsoleKey.PageUp:
+                    Next();
+                    break;
+                case ConsoleKey.PageDown:
+                    Previous();
+                    break;
+                case ConsoleKey.MediaPlay:
+                    if (IsPlaying)
+                        Pause();
+                    else
+                        Play();
+                    break;
+                case ConsoleKey.MediaNext:
+                    Next();
+                    break;
+                case ConsoleKey.MediaPrevious:
+                    Previous();
+                    break;
+                //case ConsoleKey.MediaStop:
+                //    Stop();
+                //    break;
+            }
+        }
 
         private void SetupTaskbarIcon()
         {
@@ -253,6 +305,26 @@ namespace Player.ViewModels
             //set.
             set.Save();
             Status = null;
+        }
+
+        public void Play()
+        {
+
+        }
+
+        public void Pause()
+        {
+
+        }
+
+        public void Next()
+        {
+
+        }
+
+        public void Previous()
+        {
+
         }
     }
 }

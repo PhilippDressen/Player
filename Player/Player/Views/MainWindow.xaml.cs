@@ -1,4 +1,5 @@
-﻿using Player.ViewModels;
+﻿using Microsoft.Win32;
+using Player.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,6 +70,11 @@ namespace Player.Views
                 DoubleAnimation anim = new DoubleAnimation(60, TimeSpan.FromSeconds(.2));
                 sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
             }
+        }
+
+        private void b_laden_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog 
         }
     }
 }
