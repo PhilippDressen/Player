@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Player.Helpers;
+using Player.Models;
 using System.Reflection;
 
 namespace Player.ViewModels

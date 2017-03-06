@@ -512,7 +512,7 @@
             <MenuItem x:Name="mi_removebackground" Visibility="Collapsed" Header="Hintergrundbild entfernen" />
         </ContextMenu>
     </Window.ContextMenu>
-    <Border x:Name="b_hintergrund" BorderBrush="White" BorderThickness="1" Margin="0" CornerRadius="5" Background="#CC000000">
+    <Border x:Name="b_hintergrund" BorderBrush="White" BorderThickness="1" Margin="0" CornerRadius="5" Background="#CC000000" PreviewMouseLeftButtonDown="b_hintergrund_PreviewMouseLeftButtonDown">
         <Border.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>
@@ -857,10 +857,10 @@
                     </Label.Triggers>
                 </Label>
                 <Border BorderBrush="White" BorderThickness="2,2,2,1" Margin="5,0" VerticalAlignment="Bottom" CornerRadius="1,1,0,0">
-                    <ScrollViewer x:Name="sv_tracks" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" Background="#D8000000" Foreground="White">
+                    <ScrollViewer x:Name="sv_list" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" Background="#D8000000" Foreground="White" PreviewMouseLeftButtonDown="sv_list_PreviewMouseLeftButtonDown">
                         <Grid>
                             <DockPanel>
-                                <Grid DockPanel.Dock="Top" x:Name="g_suche" Margin="10,5,10,0" VerticalAlignment="Top" IsEnabled="False">
+                                <Grid DockPanel.Dock="Top" x:Name="g_suche" Margin="10,5,10,0" VerticalAlignment="Top" IsEnabled="False" Visibility="Collapsed">
                                     <Label x:Name="l_suchen" Content="Suchen..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Padding="0" Grid.IsSharedSizeScope="True"/>
                                     <TextBox x:Name="tb_suche" TextWrapping="Wrap" Background="{x:Null}" Foreground="White" BorderBrush="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0" FontSize="14" ContextMenu="{x:Null}" Height="20" CaretBrush="White"/>
                                     <Button x:Name="b_suchelöschen" Content="X" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#00000000" BorderBrush="#FF005DFF" Foreground="White" Padding="5,1" Focusable="False" Visibility="Collapsed"/>

@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -50,6 +51,24 @@ namespace Player.Views
         private void w_mainwindow_Closed(object sender, EventArgs e)
         {
             ViewModel.Close();
+        }
+
+        private void sv_list_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sv_list.Height < 300)
+            {
+                DoubleAnimation anim = new DoubleAnimation(300, TimeSpan.FromSeconds(.2));
+                sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
+            }
+        }
+
+        private void b_hintergrund_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sv_list.Height > 60)
+            {
+                DoubleAnimation anim = new DoubleAnimation(60, TimeSpan.FromSeconds(.2));
+                sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
+            }
         }
     }
 }
