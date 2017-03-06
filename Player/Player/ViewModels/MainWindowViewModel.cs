@@ -418,7 +418,7 @@ namespace Player.ViewModels
 
             try
             {
-                this.Playlist?.Save(PlaylistFolder);
+                this.Playlist?.Save(PlaylistPath);
             }
             catch (Exception ex)
             {
