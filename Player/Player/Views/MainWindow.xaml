@@ -669,7 +669,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_laden" Content="Laden..." Margin="169.5,75,268.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80" Click="b_laden_Click">
+                        <Button x:Name="b_laden" Content="Laden..." Margin="172,75,266,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Tracks in die Wiedergabe Laden" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80" Click="b_laden_Click">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
@@ -691,7 +691,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_leeren" Content="Leeren" Margin="263.129,75,169.5,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
+                        <Button x:Name="b_leeren" Content="Leeren" Margin="264,75,174,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
@@ -713,7 +713,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_play" Content=" ► " VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
+                        <Button x:Name="b_play" Content=" ► " VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center" Click="b_play_Click">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
@@ -757,7 +757,7 @@
                         </Slider>
                         <StackPanel Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox x:Name="cb_wiederholen" Content="" Margin="0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Playlist wiederholen" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource RepeatCBStyle}" BorderBrush="White" Effect="{DynamicResource DropShadow}">
+                                <CheckBox x:Name="cb_repeat" Margin="0" VerticalAlignment="Top" Foreground="White" IsChecked="{Binding Repeat, Mode=TwoWay}" ToolTip="Playlist wiederholen" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource RepeatCBStyle}" BorderBrush="White" Effect="{DynamicResource DropShadow}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -767,7 +767,7 @@
                                         </TransformGroup>
                                     </CheckBox.RenderTransform>
                                 </CheckBox>
-                                <CheckBox x:Name="cb_zufall" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" ToolTip="Zufallswiedergabe" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource RandomCBStyle}" Effect="{DynamicResource DropShadow}">
+                                <CheckBox x:Name="cb_random" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="{Binding Random, Mode=TwoWay}" ToolTip="Zufallswiedergabe" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource RandomCBStyle}" Effect="{DynamicResource DropShadow}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -777,7 +777,7 @@
                                         </TransformGroup>
                                     </CheckBox.RenderTransform>
                                 </CheckBox>
-                                <CheckBox x:Name="cb_mute" Content="" Margin="10,0,0,0" VerticalAlignment="Top" Background="White" Foreground="White" ToolTip="Stumm" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource MuteCBStyle}" Effect="{DynamicResource DropShadow}">
+                                <CheckBox x:Name="cb_mute" Margin="10,0,0,0" VerticalAlignment="Top" Background="White" Foreground="White" ToolTip="Stumm" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Style="{DynamicResource MuteCBStyle}" Effect="{DynamicResource DropShadow}" IsChecked="{Binding IsMuting}">
                                     <CheckBox.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -788,7 +788,7 @@
                                     </CheckBox.RenderTransform>
                                 </CheckBox>
                             </StackPanel>
-                            <CheckBox x:Name="cb_positonmerken" Content="Abspielposition merken" Margin="0,5,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" ToolTip="Letzte Wiedergabeposition (im Track) merken" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Effect="{DynamicResource DropShadow}">
+                            <CheckBox x:Name="cb_positonmerken" Content="Abspielposition merken" Margin="0,5,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="{Binding RememberPosition, Mode=TwoWay}" ToolTip="Letzte Wiedergabeposition (im Track) merken" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Effect="{DynamicResource DropShadow}">
                                 <CheckBox.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -817,7 +817,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Slider x:Name="s_lautstärke" HorizontalAlignment="Right" Margin="0,35,12,68" Orientation="Vertical" Maximum="100" Value="80" AutoToolTipPlacement="TopLeft" ToolTip="Lautstärke" RenderTransformOrigin="0.5,0.5" TickPlacement="Both" TickFrequency="10" >
+                <Slider x:Name="s_lautstärke" HorizontalAlignment="Right" Margin="0,35,12,68" Orientation="Vertical" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" AutoToolTipPlacement="TopLeft" ToolTip="Lautstärke" RenderTransformOrigin="0.5,0.5" TickPlacement="Both" TickFrequency="10" >
                     <Slider.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

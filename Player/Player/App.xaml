@@ -5,7 +5,7 @@
              StartupUri="/Views/MainWindow.xaml">
     <Application.Resources>
         <ControlTemplate x:Key="ViewTemplate">
-            <StackPanel x:Name="sp_listtrack" HorizontalAlignment="Stretch"  Height="Auto" Margin="0,0,0,5" VerticalAlignment="Stretch" Width="Auto" Orientation="Horizontal" TextSearch.TextPath="{Binding Path=Title, Mode=OneWay}" MaxHeight="60" DataContext="{Binding}">
+            <StackPanel x:Name="sp_listtrack" HorizontalAlignment="Stretch"  Height="100" Margin="0,0,0,5" VerticalAlignment="Stretch" Width="Auto" Orientation="Horizontal" TextSearch.TextPath="{Binding Path=Title, Mode=OneWay}" DataContext="{Binding}">
                 <Image x:Name="i_cover" HorizontalAlignment="Left" Height="Auto" Margin="0" VerticalAlignment="Stretch" Width="Auto" Source="{Binding AlbumArt, TargetNullValue=Icons/icon.ico }" Stretch="Uniform"/>
                 <StackPanel HorizontalAlignment="Left" Height="Auto" Margin="5,0,0,0" VerticalAlignment="Center" Width="Auto" Orientation="Vertical" DataContext="{Binding}">
                     <Label x:Name="l_title" TextSearch.Text="{Binding Path=Title, Mode=OneWay}"  Content="{Binding Title}"  HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" FontSize="14" Padding="2" FontWeight="Bold" IsHitTestVisible="False"/>

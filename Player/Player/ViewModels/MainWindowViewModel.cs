@@ -55,6 +55,63 @@ namespace Player.ViewModels
             }
         }
 
+        private bool ismuting = true;
+        public bool IsMuting
+        {
+            get
+            {
+                return ismuting;
+            }
+            set
+            {
+                ismuting = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool repeat = true;
+        public bool Repeat
+        {
+            get
+            {
+                return repeat;
+            }
+            set
+            {
+                repeat = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        private bool random = true;
+        public bool Random
+        {
+            get
+            {
+                return random;
+            }
+            set
+            {
+                random = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool rememberposition = false;
+        public bool RememberPosition
+        {
+            get
+            {
+                return rememberposition;
+            }
+            set
+            {
+                rememberposition = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public static Version CurrentVersion
         {
             get
@@ -70,6 +127,14 @@ namespace Player.ViewModels
             get
             {
                 return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten");
+            }
+        }
+
+        public static string PlaylistPath
+        {
+            get
+            {
+                return System.IO.Path.Combine(PlaylistFolder, "Playlist.plst");
             }
         }
 
@@ -199,6 +264,19 @@ namespace Player.ViewModels
             }
         }
 
+        public double Volume
+        {
+            get
+            {
+                return MediaPlayer.Volume * 100;
+            }
+            set
+            {
+                MediaPlayer.Volume = value/100;
+                NotifyPropertyChanged();
+            }
+        }
+
         private Playlist playlist;
         public Playlist Playlist
         {
@@ -234,9 +312,40 @@ namespace Player.ViewModels
         {
             TaskbarIcon = new System.Windows.Forms.NotifyIcon();
             SetupTaskbarIcon();
-            LoadSettings().Wait();
-            natives = new NativeMethods();
-            natives.KeyPressed += Natives_KeyPressed;
+            LoadSettings();
+            try
+            {
+                natives = new NativeMethods();
+                natives.KeyPressed += Natives_KeyPressed;
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Error registering KeyHooks" + Environment.NewLine + ex, EventType.Error);
+            }
+            MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
+            MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+            MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
+        }
+
+        private void MediaPlayer_MediaFailed(object sender, ExceptionEventArgs e)
+        {
+            Log.Write("Error opening media" + Environment.NewLine + e.ErrorException, EventType.Error);
+            Status = "Öffnen fehlgeschlagen...";
+            Next();
+        }
+
+        private void MediaPlayer_MediaEnded(object sender, EventArgs e)
+        {
+            Next();
+        }
+
+        private void MediaPlayer_MediaOpened(object sender, EventArgs e)
+        {
+            if (IsPlaying)
+            {
+                MediaPlayer.Play();
+            }
+            Status = null;
         }
 
         private void Natives_KeyPressed(ConsoleKey key)
@@ -267,9 +376,9 @@ namespace Player.ViewModels
                 case ConsoleKey.MediaPrevious:
                     Previous();
                     break;
-                //case ConsoleKey.MediaStop:
-                //    Stop();
-                //    break;
+                case ConsoleKey.MediaStop:
+                    Stop();
+                    break;
             }
         }
 
@@ -298,7 +407,23 @@ namespace Player.ViewModels
 
         public void Close()
         {
-            Task.Run(SaveSettings);
+            try
+            {
+                SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Error saving settings" + Environment.NewLine + ex, EventType.Error);
+            }
+
+            try
+            {
+                this.Playlist?.Save(PlaylistFolder);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Error saving Playlist" + Environment.NewLine + ex, EventType.Error);
+            }
             TaskbarIcon.Dispose();
         }
         
@@ -308,15 +433,39 @@ namespace Player.ViewModels
             Settings set = Settings.Default;
             Left = set.WindowPosition.X;
             Top = set.WindowPosition.Y;
+            IsMuting = set.Muting;
+            IsPlaying = set.Playing;
+            Random = set.Random;
+            Repeat = set.Repeat;
+            Volume = set.Volume;
+            Playlist = Playlist.Load(set.Playlist);
+            LoadTrack(set.Track);
+            MediaPlayer.SpeedRatio = set.SpeedRatio;
+            MediaPlayer.Position = set.Position;
             Status = null;
         }
 
         private async Task SaveSettings()
         {
             Status = "Einstellungen speichern...";
-            Settings set = Settings.Default;
+            Settings set = Settings.Default;            
+            set.Muting = IsMuting;
+            set.Playing = IsPlaying;
+            set.Playlist = Playlist.Path;
+            set.Random = Random;
+            set.SpeedRatio = MediaPlayer.SpeedRatio;
+            set.Volume = Volume;
+            set.Track = Playlist.Tracks.IndexOf(CurrentTrack);
+            set.Repeat = Repeat;
             set.WindowPosition = new Point(Left, Top);
-            //set.
+            if (RememberPosition)
+            {
+                set.Position = MediaPlayer.Position;
+            }
+            else
+            {
+                set.Position = new TimeSpan();
+            }
             set.Save();
             Status = null;
         }
@@ -328,30 +477,47 @@ namespace Player.ViewModels
                 Status = "Loading Tracks...";
                 if (this.Playlist == null)
                 {
-                    this.Playlist = new Playlist();
+                    this.Playlist = new Playlist(PlaylistPath);
                 }
                 foreach (string path in paths)
                 {
-                    Track t = Track.ParseFromFile(path);
-                    App.Current.Dispatcher.Invoke(() => this.Playlist.Tracks.Add(t), System.Windows.Threading.DispatcherPriority.DataBind);
+                    try
+                    {
+                        Track t = Track.ParseFromFile(path); //new Track(path);
+                        App.Current.Dispatcher.Invoke(() => this.Playlist.Tracks.Add(t), System.Windows.Threading.DispatcherPriority.DataBind);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Write("Error loading Tags for " + path + Environment.NewLine + ex, EventType.Error);
+                    }
                 }
                 Status = null;
             });
         }
 
-        public void LoadTrack(Track t)
+        public void LoadTrack(int i)
         {
-            CurrentTrack = t;
+            CurrentTrack = Playlist.Tracks.ElementAt(i);
+            Status = "Öffne Datei...";
+            MediaPlayer.Open(new Uri(CurrentTrack.Path));
         }
 
         public void Play()
         {
-
+            MediaPlayer.Play();
+            IsPlaying = true;
         }
 
         public void Pause()
         {
+            MediaPlayer.Pause();
+            IsPlaying = false;
+        }
 
+        public void Stop()
+        {
+            MediaPlayer.Stop();
+            IsPlaying = false;
         }
 
         public void Next()

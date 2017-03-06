@@ -72,37 +72,44 @@ namespace Player.Views
             }
         }
 
+        private void lb_tracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lb_tracks.SelectedItem != null)
+            {
+                ViewModel.LoadTrack(lb_tracks.SelectedIndex);
+            }
+        }
+
         private const double t_dropout = .1;
-        private void DropList()
+        private void sv_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sv_list.Height < 300)
             {
                 DoubleAnimation anim = new DoubleAnimation(300, TimeSpan.FromSeconds(t_dropout));
                 sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
-            } else if (sv_list.Height > 60)
+            }
+        }
+
+        private void b_hintergrund_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sv_list.Height > 60)
             {
                 DoubleAnimation anim = new DoubleAnimation(60, TimeSpan.FromSeconds(t_dropout));
                 sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
             }
         }
 
-        private void lb_tracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void b_play_Click(object sender, RoutedEventArgs e)
         {
-            if (((FrameworkElement)e.OriginalSource).DataContext.GetType() == typeof(Track))
+            if (ViewModel.IsPlaying)
             {
-                Track t = (Track)(((FrameworkElement)e.OriginalSource).DataContext);
-                ViewModel.LoadTrack(t);
+                ViewModel.Pause();
+                b_play.Content = " ► ";
+            } else
+            {
+                ViewModel.Play();
+                b_play.Content = " II ";
             }
-        }
-
-        private void sv_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            DropList();
-        }
-
-        private void b_hintergrund_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            DropList();
         }
     }
 }
