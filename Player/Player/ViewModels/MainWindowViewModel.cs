@@ -14,6 +14,7 @@ using System.Windows.Media;
 using Player.Helpers;
 using Player.Models;
 using System.Reflection;
+using System.Windows.Threading;
 
 namespace Player.ViewModels
 {
@@ -236,7 +237,7 @@ namespace Player.ViewModels
             }
         }
 
-        private TimeSpan duration;
+        private TimeSpan duration = new TimeSpan();
         public TimeSpan Duration
         {
             get
@@ -250,7 +251,7 @@ namespace Player.ViewModels
             }
         }
 
-        private TimeSpan position;
+        private TimeSpan position = new TimeSpan();
         public TimeSpan Position
         {
             get
@@ -306,6 +307,7 @@ namespace Player.ViewModels
         }
 
         private NativeMethods natives;
+        private DispatcherTimer dt = new DispatcherTimer();
         #endregion
 
         public MainWindowViewModel()
@@ -325,6 +327,9 @@ namespace Player.ViewModels
             MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
             MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
+            dt.Interval = TimeSpan.FromSeconds(1);
+            dt.Tick += UpdateUI;
+            dt.Start();
         }
 
         private void MediaPlayer_MediaFailed(object sender, ExceptionEventArgs e)
@@ -344,6 +349,10 @@ namespace Player.ViewModels
             if (IsPlaying)
             {
                 MediaPlayer.Play();
+            }
+            if (MediaPlayer.NaturalDuration != null && MediaPlayer.NaturalDuration.HasTimeSpan)
+            {
+                Duration = MediaPlayer.NaturalDuration.TimeSpan;
             }
             Status = null;
         }
@@ -380,6 +389,11 @@ namespace Player.ViewModels
                     Stop();
                     break;
             }
+        }
+
+        private void UpdateUI(object sender, EventArgs e)
+        {
+            Position = MediaPlayer.Position;
         }
 
         private void SetupTaskbarIcon()
@@ -438,6 +452,7 @@ namespace Player.ViewModels
             Random = set.Random;
             Repeat = set.Repeat;
             Volume = set.Volume;
+            RememberPosition = set.RememberPosition;
             Playlist = Playlist.Load(set.Playlist);
             LoadTrack(set.Track);
             MediaPlayer.SpeedRatio = set.SpeedRatio;
@@ -458,6 +473,7 @@ namespace Player.ViewModels
             set.Track = Playlist.Tracks.IndexOf(CurrentTrack);
             set.Repeat = Repeat;
             set.WindowPosition = new Point(Left, Top);
+            set.RememberPosition = RememberPosition;
             if (RememberPosition)
             {
                 set.Position = MediaPlayer.Position;

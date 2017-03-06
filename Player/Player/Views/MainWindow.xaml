@@ -563,7 +563,7 @@
                     </TransformGroup>
                 </Grid.RenderTransform>
                 <StackPanel Margin="0" VerticalAlignment="Top">
-                    <Slider x:Name="s_position" Margin="10,0,45,0" VerticalAlignment="Top" Cursor="Hand" Foreground="White" BorderBrush="Transparent" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TickPlacement="TopLeft" SmallChange="1" TickFrequency="1000000" RenderTransformOrigin="0.5,0.5" Padding="0" Maximum="0">
+                    <Slider x:Name="s_position" Margin="10,0,45,0" VerticalAlignment="Top" Cursor="Hand" Foreground="White" BorderBrush="Transparent" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TickPlacement="TopLeft" SmallChange="1" TickFrequency="1000000" RenderTransformOrigin="0.5,0.5" Padding="0" Maximum="{Binding Duration.TotalSeconds, Mode=OneWay}" Value="{Binding Position.TotalSeconds, Mode=OneWay}">
                         <Slider.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -574,7 +574,7 @@
                         </Slider.RenderTransform>
                     </Slider>
                     <Grid VerticalAlignment="Top">
-                        <Label x:Name="l_position" Content="Spielzeit" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Left" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                        <Label x:Name="l_position" Content="{Binding Position, FallbackValue=Spielzeit}" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Left" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -594,7 +594,7 @@
                                 </TransformGroup>
                             </Label.RenderTransform>
                         </Label>
-                        <Label x:Name="l_length" Content="Länge" Margin="0,0,50,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Right" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                        <Label x:Name="l_length" Content="{Binding Duration, FallbackValue=Länge}" Margin="0,0,50,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Right" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -817,7 +817,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Slider x:Name="s_lautstärke" HorizontalAlignment="Right" Margin="0,35,12,68" Orientation="Vertical" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" AutoToolTipPlacement="TopLeft" ToolTip="Lautstärke" RenderTransformOrigin="0.5,0.5" TickPlacement="Both" TickFrequency="10" >
+                <Slider x:Name="s_volume" HorizontalAlignment="Right" Margin="0,35,12,68" Orientation="Vertical" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" AutoToolTipPlacement="TopLeft" ToolTip="Lautstärke" RenderTransformOrigin="0.5,0.5" TickPlacement="Both" TickFrequency="10" MouseDoubleClick="s_volume_MouseDoubleClick" >
                     <Slider.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

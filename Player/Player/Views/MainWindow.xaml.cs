@@ -111,5 +111,10 @@ namespace Player.Views
                 b_play.Content = " II ";
             }
         }
+
+        private void s_volume_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel.Volume = 80;
+        }
     }
 }
