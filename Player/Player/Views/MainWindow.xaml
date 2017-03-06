@@ -917,7 +917,7 @@
                     </ScrollViewer>
                 </Border>
             </Grid>
-            <ProgressBar x:Name="pb_progress" Foreground="#66FFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" VerticalAlignment="Bottom" Height="15"/>
+            <ProgressBar x:Name="pb_progress" Foreground="#66FFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" VerticalAlignment="Bottom" Height="10" Maximum="{Binding Duration.TotalSeconds, Mode=OneWay}" Value="{Binding Position.TotalSeconds, Mode=OneWay}"/>
         </Grid>
     </Border>
 </Window>
