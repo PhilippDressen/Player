@@ -74,7 +74,7 @@ namespace Player.Helpers
         }
 
 
-        public static void Write(string message, EventType type)
+        public static void Write(string message, EventType type = EventType.Info)
         {
             if (LogWriter != null && LogWriter.BaseStream != null && LogWriter.BaseStream.CanWrite && CanLog)
             {

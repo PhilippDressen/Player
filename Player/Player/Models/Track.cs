@@ -11,10 +11,11 @@ namespace Player.Models
 {
     public class Track
     {
-        public Track(string path = null)
+        public Track(string path)
         {
             this.Id = Guid.NewGuid();
             this.Path = path;
+            this.Title = System.IO.Path.GetFileNameWithoutExtension(path);
         }
 
         bool initialized = false;
@@ -89,41 +90,17 @@ namespace Player.Models
             initialized = false;
         }
 
-        public static Track ParseFromTaglib(TagLib.Tag t)
-        {
-            Track tag = new Track();
-            tag.Title = t.Title;
-            tag.Performer = t.FirstPerformer;
-            tag.Album = t.Album;
-            if (t.Year > 0)
-                tag.Year = Convert.ToUInt32(t.Year);
-            if (t.Pictures.Count() > 0)
-            {
-                MemoryStream ms = new MemoryStream(t.Pictures[0].Data.Data);
-                BitmapImage Cover = new BitmapImage();
-                Cover.BeginInit();
-                Cover.StreamSource = ms;
-                Cover.EndInit();
-                tag.AlbumArt = Cover;
-                tag.AlbumArt.Freeze();
-            }
-            return tag;
-        }
-
         public static Track ParseFromFile(string path)
         {
             if (!File.Exists(path))
                 throw new System.IO.FileLoadException("Die Datei ist nicht vorhanden");
-            Track tag = new Track();
+            Track tag = new Track(path);
             if (System.IO.Path.GetExtension(path) != ".m3u")
             {
-                tag.Path = path;
                 TagLib.File tagfile = TagLib.File.Create(path);
                 TagLib.Tag t = tagfile.Tag;
                 tagfile.Dispose();
-                if (string.IsNullOrEmpty(t.Title))
-                    tag.Title = System.IO.Path.GetFileNameWithoutExtension(path);
-                else
+                if (!string.IsNullOrEmpty(t.Title))                    
                     tag.Title = t.Title;
                 tag.Performer = t.FirstPerformer;
                 tag.Album = t.Album;

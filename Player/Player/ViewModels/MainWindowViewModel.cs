@@ -213,6 +213,20 @@ namespace Player.ViewModels
             }
         }
 
+        private Track currenttrack;
+        public Track CurrentTrack
+        {
+            get
+            {
+                return currenttrack;
+            }
+            set
+            {
+                currenttrack = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private NativeMethods natives;
         #endregion
 
@@ -305,6 +319,29 @@ namespace Player.ViewModels
             //set.
             set.Save();
             Status = null;
+        }
+
+        public void AddTracks(IEnumerable<string> paths)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Status = "Loading Tracks...";
+                if (this.Playlist == null)
+                {
+                    this.Playlist = new Playlist();
+                }
+                foreach (string path in paths)
+                {
+                    Track t = Track.ParseFromFile(path);
+                    App.Current.Dispatcher.Invoke(() => this.Playlist.Tracks.Add(t), System.Windows.Threading.DispatcherPriority.DataBind);
+                }
+                Status = null;
+            });
+        }
+
+        public void LoadTrack(Track t)
+        {
+            CurrentTrack = t;
         }
 
         public void Play()

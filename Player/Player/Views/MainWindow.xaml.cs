@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Player.Models;
 using Player.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,19 @@ namespace Player.Views
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        static OpenFileDialog _ofd = new OpenFileDialog() { Title = "Titel laden...", Multiselect = true, Filter = "Medien-Dateien|*.mp3; *.wav; *.wmv; *.wma; *.m3u; *.mp4" };
+        public static OpenFileDialog OpenTracksDialog
+        {
+            get { return _ofd; }
+        }
+
         private MainWindowViewModel ViewModel
         {
             get
             {
                 return this.DataContext as MainWindowViewModel;
             }
-        } 
+        }
 
         public MainWindow()
         {
@@ -54,27 +61,48 @@ namespace Player.Views
             ViewModel.Close();
         }
 
-        private void sv_list_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void b_laden_Click(object sender, RoutedEventArgs e)
+        {
+            OpenTracksDialog.ShowDialog(this);
+            string[] paths = new string[OpenTracksDialog.FileNames.Length];
+            OpenTracksDialog.FileNames.CopyTo(paths, 0);
+            if (paths.Length > 0)
+            {
+                ViewModel.AddTracks(paths);
+            }
+        }
+
+        private const double t_dropout = .1;
+        private void DropList()
         {
             if (sv_list.Height < 300)
             {
-                DoubleAnimation anim = new DoubleAnimation(300, TimeSpan.FromSeconds(.2));
+                DoubleAnimation anim = new DoubleAnimation(300, TimeSpan.FromSeconds(t_dropout));
                 sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
-            }
-        }
-
-        private void b_hintergrund_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sv_list.Height > 60)
+            } else if (sv_list.Height > 60)
             {
-                DoubleAnimation anim = new DoubleAnimation(60, TimeSpan.FromSeconds(.2));
+                DoubleAnimation anim = new DoubleAnimation(60, TimeSpan.FromSeconds(t_dropout));
                 sv_list.BeginAnimation(ScrollViewer.HeightProperty, anim);
             }
         }
 
-        private void b_laden_Click(object sender, RoutedEventArgs e)
+        private void lb_tracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            OpenFileDialog 
+            if (((FrameworkElement)e.OriginalSource).DataContext.GetType() == typeof(Track))
+            {
+                Track t = (Track)(((FrameworkElement)e.OriginalSource).DataContext);
+                ViewModel.LoadTrack(t);
+            }
+        }
+
+        private void sv_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DropList();
+        }
+
+        private void b_hintergrund_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DropList();
         }
     }
 }

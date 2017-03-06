@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="{Binding Title}" IsEnabled="{Binding IsEnabled}" Topmost="True"
         ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}" ShowInTaskbar="False" Foreground="White" Focusable="False"
-        Icon="../Icons/iconmini.ico" IsTabStop="False" MouseLeftButtonDown="w_mainwindow_MouseLeftButtonDown" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" Closed="w_mainwindow_Closed">
+        Icon="/Icons/iconmini.ico" IsTabStop="False" MouseLeftButtonDown="w_mainwindow_MouseLeftButtonDown" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" Closed="w_mainwindow_Closed">
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>
@@ -512,7 +512,7 @@
             <MenuItem x:Name="mi_removebackground" Visibility="Collapsed" Header="Hintergrundbild entfernen" />
         </ContextMenu>
     </Window.ContextMenu>
-    <Border x:Name="b_hintergrund" BorderBrush="White" BorderThickness="1" Margin="0" CornerRadius="5" Background="#CC000000" PreviewMouseLeftButtonDown="b_hintergrund_PreviewMouseLeftButtonDown">
+    <Border x:Name="b_hintergrund" BorderBrush="White" BorderThickness="1" Margin="0" CornerRadius="5" Background="#CC000000" MouseDown="b_hintergrund_MouseDown">
         <Border.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>
@@ -605,21 +605,12 @@
                             </Label.RenderTransform>
                         </Label>
                     </Grid>
+                    
+                    
                     <StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,45,10">
-                        <Image x:Name="i_cover" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxWidth="150" MaxHeight="150" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
-                            <Image.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Image.RenderTransform>
-                        </Image>
+                        <Label Template="{DynamicResource ViewTemplate}" DataContext="{Binding CurrentTrack}"/>                        
+                        
                         <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Effect="{DynamicResource DropShadow}">
-                            <Label x:Name="l_titel1" Background="{x:Null}" Padding="0" FontSize="16" FontWeight="Bold" Content="Kein Titel" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
-                            <Label x:Name="l_performer1" Background="{x:Null}" Padding="0" FontSize="16" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
-                            <Label x:Name="l_album1" Background="{x:Null}" Padding="0" FontSize="16" ScrollViewer.CanContentScroll="True" Foreground="White" Effect="{DynamicResource DropShadow}"/>
                             <TextBlock TextWrapping="Wrap" Foreground="White" Effect="{DynamicResource DropShadow}"><Run x:Name="r_playlist1"/><Run Text=" "/><Run Text=" "/><Run Text=" "/><Run x:Name="r_track1" Text="0"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run x:Name="r_tracks1" Text="0"/></TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -857,7 +848,7 @@
                     </Label.Triggers>
                 </Label>
                 <Border BorderBrush="White" BorderThickness="2,2,2,1" Margin="5,0" VerticalAlignment="Bottom" CornerRadius="1,1,0,0">
-                    <ScrollViewer x:Name="sv_list" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" Background="#D8000000" Foreground="White" PreviewMouseLeftButtonDown="sv_list_PreviewMouseLeftButtonDown">
+                    <ScrollViewer x:Name="sv_list" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" Background="#D8000000" Foreground="White" PreviewMouseDown="sv_list_PreviewMouseDown">
                         <Grid>
                             <DockPanel>
                                 <Grid DockPanel.Dock="Top" x:Name="g_suche" Margin="10,5,10,0" VerticalAlignment="Top" IsEnabled="False" Visibility="Collapsed">
@@ -893,7 +884,7 @@
                                             </ContextMenu>
                                         </ListBox.ContextMenu>
                                     </ListBox>
-                                    <ListBox x:Name="lb_tracks"  Foreground="White" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" ItemTemplate="{DynamicResource TrackTemplate}" ItemsSource="{Binding Playlist.Tracks}">
+                                    <ListBox x:Name="lb_tracks"  Foreground="White" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.5,0.5" Background="#00000000" Style="{DynamicResource LBStyle}" ScrollViewer.CanContentScroll="False" BorderBrush="{x:Null}" MinHeight="60" Margin="0" ItemTemplate="{DynamicResource TrackTemplate}" ItemsSource="{Binding Playlist.Tracks}" MouseDoubleClick="lb_tracks_MouseDoubleClick">
                                         <ListBox.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
