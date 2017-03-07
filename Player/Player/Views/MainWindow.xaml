@@ -530,14 +530,6 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </Grid.RenderTransform>
-            <ProgressBar x:Name="pb_position" Height="10" Margin="0" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" Value="100">
-                <ProgressBar.Foreground>
-                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
-                        <GradientStop Color="White" Offset="1"/>
-                        <GradientStop Offset="0"/>
-                    </LinearGradientBrush>
-                </ProgressBar.Foreground>
-            </ProgressBar>
             <Grid x:Name="g_info" Margin="5,5,5,10" MinWidth="10" MinHeight="10" VerticalAlignment="Top" HorizontalAlignment="Left" Opacity="0">
                 <StackPanel Orientation="Horizontal" Margin="0">
                     <Image x:Name="i_minicover" MaxHeight="100" Stretch="UniformToFill" Effect="{DynamicResource DropShadow}"/>
@@ -574,7 +566,7 @@
                         </Slider.RenderTransform>
                     </Slider>
                     <Grid VerticalAlignment="Top">
-                        <Label x:Name="l_position" Content="{Binding Position, FallbackValue=Spielzeit}" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Left" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                        <Label x:Name="l_position" ContentStringFormat="{}{0:hh\:mm\:ss}" Content="{Binding Position}" Margin="10,0,0,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Left" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -594,7 +586,7 @@
                                 </TransformGroup>
                             </Label.RenderTransform>
                         </Label>
-                        <Label x:Name="l_length" Content="{Binding Duration, FallbackValue=Länge}" Margin="0,0,50,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Right" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
+                        <Label x:Name="l_length" ContentStringFormat="{}{0:hh\:mm\:ss}" Content="{Binding Duration}" Margin="0,0,50,0" VerticalAlignment="Top" Foreground="White" HorizontalAlignment="Right" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Effect="{DynamicResource DropShadow}">
                             <Label.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -847,7 +839,7 @@
                         </EventTrigger>
                     </Label.Triggers>
                 </Label>
-                <Border BorderBrush="White" BorderThickness="2,2,2,1" Margin="5,0" VerticalAlignment="Bottom" CornerRadius="1,1,0,0">
+                <Border BorderBrush="White" BorderThickness="2,2,2,1" Margin="5,0" VerticalAlignment="Bottom" CornerRadius="1,1,0,0" d:IsHidden="True">
                     <ScrollViewer x:Name="sv_list" PanningMode="VerticalOnly" PanningRatio=".95" PanningDeceleration="0.001" Height="60" VerticalScrollBarVisibility="Hidden" Background="#D8000000" Foreground="White" PreviewMouseDown="sv_list_PreviewMouseDown">
                         <Grid>
                             <DockPanel>
@@ -917,7 +909,14 @@
                     </ScrollViewer>
                 </Border>
             </Grid>
-            <ProgressBar x:Name="pb_progress" Foreground="#66FFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" VerticalAlignment="Bottom" Height="10" Maximum="{Binding Duration.TotalSeconds, Mode=OneWay}" Value="{Binding Position.TotalSeconds, Mode=OneWay}"/>
+            <ProgressBar x:Name="pb_position" Height="10" Margin="0" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" Maximum="{Binding Duration.TotalSeconds, Mode=OneWay}" Value="{Binding Position.TotalSeconds, Mode=OneWay}">
+                <ProgressBar.Foreground>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                        <GradientStop Color="White" Offset="1"/>
+                        <GradientStop Offset="0"/>
+                    </LinearGradientBrush>
+                </ProgressBar.Foreground>
+            </ProgressBar>
         </Grid>
     </Border>
 </Window>
