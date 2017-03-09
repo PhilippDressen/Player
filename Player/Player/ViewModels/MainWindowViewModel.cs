@@ -21,6 +21,8 @@ namespace Player.ViewModels
     class MainWindowViewModel : INotifyPropertyChanged
     {
         #region Properties
+        private Random rand = new System.Random(DateTime.Now.Millisecond);
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName]string name = null)
@@ -513,8 +515,7 @@ namespace Player.ViewModels
 
         public void LoadTrack(int i)
         {
-            Status = "Öffne Datei...";
-            IsPlaying = true;   // start immediately after loading
+            Status = "Öffne Datei...";            
             CurrentTrack = Playlist.Tracks.ElementAt(i);            
             MediaPlayer.Open(new Uri(CurrentTrack.Path));
         }
@@ -539,12 +540,54 @@ namespace Player.ViewModels
 
         public void Next()
         {
+            if (Playlist.HasTracks)
+            {
+                if (Random)
+                {
+                    int i = rand.Next(Playlist.Length);
+                    LoadTrack(i);
+                    return;
+                }
 
+                int actual = Playlist.Tracks.IndexOf(CurrentTrack);
+                if (Playlist.Length > actual)
+                {
+                    LoadTrack(++actual);
+                }
+                else if (Repeat)
+                {
+                    LoadTrack(0);
+                }
+                else
+                {
+                    IsPlaying = false;
+                    Stop();
+                }
+            }
+            else
+            {
+                IsPlaying = false;
+                Stop();
+            }
         }
 
         public void Previous()
         {
+            int actual = Playlist.Tracks.IndexOf(CurrentTrack);
+            if (MediaPlayer.Position != null && MediaPlayer.Position.TotalSeconds < 3 && Playlist.HasTracks && actual > 0)
+            {                
+                LoadTrack(--actual);
+            }
+            else
+            {
+                Stop();
+                Play();
+            }
+        }
 
+        public void Clear()
+        {
+            //TODO implement clearing
         }
     }
 }

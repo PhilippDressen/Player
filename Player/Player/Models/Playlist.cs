@@ -23,6 +23,14 @@ namespace Player.Models
             }
         }
 
+        public bool HasTracks
+        {
+            get
+            {
+                return (Tracks.Count > 0);
+            }
+        }
+
         public ObservableCollection<Track> Tracks
         { get; }
 
@@ -59,40 +67,7 @@ namespace Player.Models
             }
 
             return pl;
-        }
-
-        //public void Save()
-        //{
-        //    //string path = "";
-        //    //Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Wiedergabelisten"));
-
-        //    XDocument xd = new XDocument();
-        //    xd.AddFirst(new XElement("smil"));
-        //    XElement head = new XElement("head");
-        //    head.Add(
-        //        new XElement("meta",
-        //            new XAttribute("name", "Generator"),
-        //            new XAttribute("content", System.Reflection.Assembly.GetExecutingAssembly().GetName())
-        //            ),
-        //            new XElement("meta",
-        //            new XAttribute("name", "ItemCount"),
-        //            new XAttribute("content", Tracks.Count())
-        //            ),
-        //            new XElement("title", System.IO.Path.GetFileNameWithoutExtension(path))
-        //        );
-        //    xd.Root.Add(head);
-        //    XElement seq = new XElement("seq");
-        //    foreach (Track t in Tracks)
-        //    {
-        //        seq.Add(
-        //            new XElement("media",
-        //                new XAttribute("src", t.Path)
-        //            )
-        //            );
-        //    }
-        //    xd.Root.Add(new XElement("body", seq));
-        //    xd.Save(path);
-        //}
+        }        
 
         public void Save(string path)
         {

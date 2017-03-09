@@ -619,7 +619,7 @@
                                 </TransformGroup>
                             </Slider.RenderTransform>
                         </Slider>
-                        <Button x:Name="b_zurück" Content="◄◄" Margin="0,30,120,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderThickness="1" HorizontalAlignment="Center" FontSize="16" UseLayoutRounding="False" MinWidth="20" MinHeight="20">
+                        <Button x:Name="b_zurück" Content="◄◄" Margin="0,30,120,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" BorderThickness="1" HorizontalAlignment="Center" FontSize="16" UseLayoutRounding="False" MinWidth="20" MinHeight="20" Click="b_zurück_Click">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
@@ -641,7 +641,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_vor" Content="►►" Margin="120,30,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" HorizontalAlignment="Center">
+                        <Button x:Name="b_vor" Content="►►" Margin="120,30,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" RenderTransformOrigin="0.5,0.5" Padding="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" HorizontalAlignment="Center" Click="b_vor_Click">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
@@ -685,7 +685,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_leeren" Content="Leeren" Margin="264,75,174,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80">
+                        <Button x:Name="b_leeren" Content="Leeren" Margin="264,75,174,0" HorizontalAlignment="Center" Foreground="White" ToolTip="Die Wiedergabe leeren" RenderTransformOrigin="0.5,0.5" Padding="10,0" Effect="{DynamicResource DropShadow}" FontSize="16" BorderThickness="1" UseLayoutRounding="False" MinWidth="20" MinHeight="20" VerticalAlignment="Top" Width="80" Click="b_leeren_Click">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
@@ -707,7 +707,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_play" Content="{Binding IsPlaying, Converter={StaticResource PlayButtonConverter}}" VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center" Click="b_play_Click">
+                        <Button x:Name="b_play" Content="{Binding IsPlaying, Converter={StaticResource PlayButtonConverter}, Mode=OneWay}" VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center" Click="b_play_Click">
                             
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

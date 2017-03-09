@@ -76,6 +76,7 @@ namespace Player.Views
         {
             if (lb_tracks.SelectedItem != null)
             {
+                ViewModel.IsPlaying = true;   // start immediately after loading
                 ViewModel.LoadTrack(lb_tracks.SelectedIndex);
                 MinimizeList();
             }
@@ -124,6 +125,21 @@ namespace Player.Views
         private void s_volume_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ViewModel.Volume = 80;
+        }
+
+        private void b_zurück_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Previous();
+        }
+
+        private void b_vor_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Next();
+        }
+
+        private void b_leeren_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Clear();
         }
     }
 }
