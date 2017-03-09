@@ -513,8 +513,9 @@ namespace Player.ViewModels
 
         public void LoadTrack(int i)
         {
-            CurrentTrack = Playlist.Tracks.ElementAt(i);
             Status = "Öffne Datei...";
+            IsPlaying = true;   // start immediately after loading
+            CurrentTrack = Playlist.Tracks.ElementAt(i);            
             MediaPlayer.Open(new Uri(CurrentTrack.Path));
         }
 

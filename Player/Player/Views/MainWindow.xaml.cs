@@ -77,11 +77,22 @@ namespace Player.Views
             if (lb_tracks.SelectedItem != null)
             {
                 ViewModel.LoadTrack(lb_tracks.SelectedIndex);
+                MinimizeList();
             }
         }
 
         private const double t_dropout = .1;
         private void sv_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MaximizeList();    
+        }
+
+        private void b_hintergrund_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MinimizeList();
+        }
+
+        private void MaximizeList()
         {
             if (sv_list.Height < 300)
             {
@@ -90,7 +101,7 @@ namespace Player.Views
             }
         }
 
-        private void b_hintergrund_MouseDown(object sender, MouseButtonEventArgs e)
+        private void MinimizeList()
         {
             if (sv_list.Height > 60)
             {
