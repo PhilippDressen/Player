@@ -115,11 +115,9 @@ namespace Player.Views
             if (ViewModel.IsPlaying)
             {
                 ViewModel.Pause();
-                b_play.Content = " ► ";
             } else
             {
                 ViewModel.Play();
-                b_play.Content = " II ";
             }
         }
 

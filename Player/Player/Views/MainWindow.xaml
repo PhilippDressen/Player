@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Player"
         xmlns:ViewModels="clr-namespace:Player.ViewModels"
+        xmlns:Helpers="clr-namespace:Player.Helpers"
         mc:Ignorable="d"
         Title="{Binding Title}" IsEnabled="{Binding IsEnabled}" Topmost="True"
         ResizeMode="NoResize" VerticalContentAlignment="Center" SizeToContent="WidthAndHeight" Background="{x:Null}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}" ShowInTaskbar="False" Foreground="White" Focusable="False"
@@ -13,6 +14,7 @@
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <Helpers:BoolToPlayConverter x:Key="PlayButtonConverter"/>
         <Style x:Key="GlassButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="Cursor" Value="Hand" />
@@ -705,7 +707,8 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                        <Button x:Name="b_play" Content=" ► " VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center" Click="b_play_Click">
+                        <Button x:Name="b_play" Content="{Binding IsPlaying, Converter={StaticResource PlayButtonConverter}}" VerticalAlignment="Top" Margin="0,26.313,0,0" Foreground="White" FontFamily="Arial Black" HorizontalContentAlignment="Center" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" Padding="10" Effect="{DynamicResource DropShadow}" FontSize="20" BorderThickness="1" MinWidth="20" MinHeight="20" HorizontalAlignment="Center" Click="b_play_Click">
+                            
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#E5000000" Offset="0"/>
